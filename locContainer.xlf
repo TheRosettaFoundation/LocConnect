@@ -1,0 +1,23 @@
+<xliff version='1.2' xmlns='urn:oasis:names:tc:xliff:document:1.2'>
+  <file  datatype='plaintext'>
+    <header>
+	 <phase-group>
+	   	<phase phase-name='Project Kick-off' process-name='Enter project metadata' company-name='LRC' tool-id='PMUI'/>
+		<phase phase-name='Quality Assurance' process-name='authoring' tool-id='LKR'/>
+	   </phase-group>
+	  <reference>
+        <internal-file form='text'>
+           <converted-file fileformat='text'/>
+        </internal-file>
+      </reference>
+	  <reference>
+		<internal-file>
+			<pmui-data/>
+        </internal-file>
+       </reference>
+	   <tool tool-name='Project Management User Interface - locConnect' tool-id='PMUI' tool-version='1'/>
+    </header>
+	<body>
+	</body>
+  </file>
+</xliff>
