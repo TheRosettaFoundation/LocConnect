@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <?php
-
+//
 /*------------------------------------------------------------------------*
  * © 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
@@ -27,7 +27,7 @@ require_once('./conf.php');
 <div id="links">
 <ul>
 <li> <a href="./index.php"><?php print BASE_HOME;?></a> </li>
-<li> <a href="./pmui.php"><?php print BASE_NEW_PROJECT;?></a> </li>
+<li> <a href="./prompt.php"><?php print BASE_NEW_PROJECT;?></a> </li>
 <li> <a href="./trackproj.php"><?php print BASE_TRACK_PROJECTS;?></a></li>
 <li> <a href="./about.php"><?php print  BASE_ABOUT;?></a> </li>
 </ul>

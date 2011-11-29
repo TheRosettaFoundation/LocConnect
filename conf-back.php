@@ -1,20 +1,25 @@
 <?php
+/*------------------------------------------------------------------------*
+ * © 2010 University of Limerick. All rights reserved. This material may  *
+ * not be reproduced, displayed, modified or distributed without the      *
+ * express prior written permission of the copyright holder.              *
+ *------------------------------------------------------------------------*/
 date_default_timezone_set('Europe/Dublin');
 //ini_set('display_errors',1); error_reporting(E_ALL|E_STRICT); //Set php error display
 define('BASE_PATH',realpath('.')); 						
 define('BASE_URL', dirname($_SERVER["SCRIPT_NAME"]));	    //folder path where locConnect is installed
 //define('BASE_DB_URL', '../locConnect2.0/');	
 define('BASE_DB_URL', './');								// locConnect database location
-define('BASE_DEF_VAL', 'ON');
-define('BASE_VER', 'v2.5');									//locConnect version
-define('BASE_UPDATE', '18th October, 2010');				//last updated date
+define('BASE_DEF_VAL', 'OFF');
+define('BASE_VER', 'v2.2');									//locConnect version
+define('BASE_UPDATE', '11th October, 2010');				//last updated date
 define('BASE_EMAIL', 'connect@localisation.ie');			//locConnect email
 define('BASE_PREV_STYLE','none');                    //translation preview style none or glue
 /*Localisation Strings*/
 
 //header
 define('BASE_LOCCONNECT', 'locConnect');
-define('BASE_MOTO', 'conducting your components');
+define('BASE_MOTO', 'connecting components together');
 
 define('BASE_TITLE', 'locConnect '.BASE_VER.' - Localisation Project Manager');
 define('BASE_H1', 'AUTUMN DEMO');
@@ -100,9 +105,9 @@ define('BASE_T_LOADING', 'Loading');
 $arr = array(
  "LKR" => "Localisation Knowledge Repository",
  "WFR" => "Workflow Recommender", 
- "LMC" => "XLIFF Phoenix", 
+ "LMC" => "Localisation Memory Container", 
  "RT" => "Translation Rating", 
- "MT" => "Mapper" );
+ "MT" => "Machine Translation" );
 $st = array(
  "Processing" => "Processing",
  "Pending" => "Pending", 
@@ -177,8 +182,7 @@ define('BASE_UI_TRANS_BY', '');
 
 $languages = array(
  "en" => ".",
- "es" => "./es"
- );
+ "es" => "./es");
 
 //function curPageName() {
  //return substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);

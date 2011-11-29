@@ -1,4 +1,5 @@
 <?php
+define('BASE_UPLOAD_PATH','c:/uploads/');			//UPLOAD FOLDER PATH
 date_default_timezone_set('Europe/Dublin');
 //ini_set('display_errors',1); error_reporting(E_ALL|E_STRICT); //Set php error display
 define('BASE_PATH',realpath('.')); 						
@@ -10,15 +11,16 @@ define('BASE_VER', 'v2.7');									//locConnect version
 define('BASE_UPDATE', '13th April, 2011');				//last updated date
 define('BASE_EMAIL', 'Asanka.Wasala@ul.ie');			//locConnect email
 define('BASE_PREV_STYLE','none');                    //translation preview style none or glue
+
 /*Localisation Strings*/
 
 //header
 define('BASE_LOCCONNECT', 'locConnect');
 define('BASE_MOTO', 'Conector de componentes');
 
-define('BASE_TITLE', 'locConnect '.BASE_VER.' - Localisation Project Manager');
-define('BASE_H1', 'SPRING DEMO');
-define('BASE_H2', '08th July, 2011');
+define('BASE_TITLE', 'locConnect '.BASE_VER.' - Gestor de proyectos de localización');
+define('BASE_H1', 'MUESTRA DE PRIMAVERA');
+define('BASE_H2', '8 de julio de 2011');
 
 //common
 define('BASE_LATEST_PROJECTS', 'Últimos proyectos');
@@ -83,6 +85,7 @@ define('BASE_PMUI_PCTEMAIL', 'Email de contacto');
 define('BASE_PMUI_PLMC', 'Archivo LMC');
 define('BASE_PMUI_PSRCF', 'Archivo de texto original');
 define('BASE_PMUI_PSRCT', 'Texto original<br/> (si no tiene archivo)');
+define('BASE_PMUI_CLIENT', 'Cliente');
 
 //track project
 define('BASE_TP_AP', 'Proyectos activos');
@@ -103,7 +106,10 @@ $arr = array(
  "WFR" => "Recomendador de flujos de trabajo", 
  "LMC" => "Contenedor de memorias de localización", 
  "RT" => "Evaluador de traducciones", 
- "MT" => "Traducción automática" );
+ "MT" => "Traducción automática", 
+ "DDC" => "Clasificador del ámbito de datos",
+ "DST" => "Traductor de ámbito específico"
+ );
 $st = array(
  "Processing" => "En proceso",
  "Pending" => "Pendiente", 
@@ -171,6 +177,10 @@ define('BASE_D_SUCCESS', 'Se han borrado el proyecto y los archivos asociados.')
 //xconv
 define('BASE_XCONV_PREVIEW', 'Vista previa');
 define('BASE_XCONV_BACK', 'Volver al editor de XLIFF');
+define('BASE_PMUI_PSRCXLIFF', 'Archivo XLIFF original');
+define('BASE_PMUI_INPUT_SOURCE', 'Elija la fuente de entrada de datos:');
+define('BASE_PMUI_TEXT_INPUT', 'Archivo de texto o inserción de texto');
+define('BASE_PMUI_XLIFF_INPUT', 'Archivo XLIFF');
 
 //locConnect UI Translations
 define('BASE_UI_TRANS_BY', 'Paquete de interfaz de idioma español para locConnect mantenido por Aram Morera Mesa, última actualización: 15-10-2010');
@@ -179,10 +189,13 @@ $languages = array(
  "en" => "..",
  "es" => ".");
 
- 
+//function curPageName() {
+ //return substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
+//}
+
 function curPageName() {
  $pageURL = 'http';
- if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+ //if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
  $pageURL .= "://";
  if ($_SERVER["SERVER_PORT"] != "80") {
   $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];

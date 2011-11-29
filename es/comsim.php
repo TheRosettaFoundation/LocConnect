@@ -21,7 +21,7 @@
 <td></td>
 <td>Component</td>
 <td>
-<select name="com"><option selected="selected">LKR</option><option>WFR</option><option>LMC</option><option>RT</option><option>MT</option></select>
+<select name="com"><option selected="selected">LKR</option><option>WFR</option><option>LMC</option><option>RT</option><option>MT</option><option>DST</option><option>DDC</option></select>
 </td>
 </tr>
 <tr>

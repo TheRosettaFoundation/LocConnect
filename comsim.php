@@ -21,7 +21,17 @@
 <td></td>
 <td>Component</td>
 <td>
-<select name="com"><option selected="selected">LKR</option><option>WFR</option><option>LMC</option><option>RT</option><option>MT</option></select>
+<select name="com">
+<?php 
+reset($arr); 
+ for($i=0;$i<count($arr);$i++){ 
+   
+   $k=key($arr);
+   print "<option>".$k."</option>";
+   next($arr); 
+} 
+?>
+</select>
 </td>
 </tr>
 <tr>
