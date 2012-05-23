@@ -5,16 +5,20 @@
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
 require_once('./conf.php');
-require_once 'HTTP\Request2.php';
+require_once 'HTTP/Request2.php';
  $com=$_POST['com'];
  $id=$_POST['job'];
  $func=$_POST['api'];
  
 
 
-
-
-print "SIMULATING ".$com." and Project ID: ".$id."<br/><br/>";
+if ($func!='directjob' )
+{
+ print "<span style=\"color:red\">SIMULATING ".$com." and Project ID: ".$id." (Right click and view page source to see the LocConnect's response.)</span>\n\n\n";
+} else
+{
+	print "<span style=\"color:red\">PROJECT CREATION BY DIRECT SUBMISSION:(Right click and view page source to see the LocConnect's response.)</span>\n\n\n";;
+}
  
 if ($func=='status' )
 {
@@ -149,6 +153,38 @@ if ($func=='get' )
    
    print $res;	
 }
+
+if ($func=='directjob' )
+{
+  $filename = $_FILES["datafile"]["name"];
+  $tmpName=$_FILES['datafile']['tmp_name'];
+  $fp      = fopen($tmpName, 'r');
+  $data = trim(fread($fp, filesize($tmpName)));
+  fclose($fp);
+ 
+  
+ $request = new HTTP_Request2("http://".$_SERVER['HTTP_HOST'].BASE_URL."/new_project.php");
+ $request->setHeader('Accept-Charset', 'utf-8'); 
+ $request->setMethod(HTTP_Request2::METHOD_POST)
+    ->addPostParameter('com', "COMSIM")
+	->addPostParameter('data', $data);
+
+	try {
+		$response = $request->send();
+		if (200 == $response->getStatus()) {
+			$res=$response->getBody();
+		} else {
+			$res='Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+				 $response->getReasonPhrase();
+		}
+	} catch (HTTP_Request2_Exception $e) {
+		$res='Error: ' . $e->getMessage();
+	} 
+   
+   print $res;	
+}
+
+print "\n\n";
 ;?>
 <br/><br/>
-<a href="./comsim.php" target="_self"> Back to simulator </a>
+<a href="./comsim.php?<?php print "lastcom=".$com."&lastid=".$id; ?>" target="_self"> Back to simulator </a>

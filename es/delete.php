@@ -31,7 +31,7 @@
           <div id="links">
             <ul>
              <li> <a href="./index.php"><?php print BASE_HOME;?></a> </li>
-			<li> <a href="./pmui.php"><?php print BASE_NEW_PROJECT;?></a> </li>
+			<li> <a href="./prompt.php"><?php print BASE_NEW_PROJECT;?></a> </li>
 			<li> <a href="./trackproj.php"><?php print BASE_TRACK_PROJECTS;?></a></li>
 			<li> <a href="./about.php"><?php print  BASE_ABOUT;?></a> </li>
             </ul>
@@ -42,8 +42,7 @@
 		<h4><?php print  BASE_H2;?></h4>
         </div>
         <div id="contentarea">
-          <div id="header"> <h4 class="lang"><?php $i=0; foreach($languages as $code => $svrpath) {    $i++;    print '<a href="'.$svrpath.'/'.curPageName().'" >'.$code.'</a>';
-	if ($i<count($languages)) print " | "; }; ?> </h4>
+          <div id="header"> 
             <?php
              $id=$_GET["id"];
              $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');

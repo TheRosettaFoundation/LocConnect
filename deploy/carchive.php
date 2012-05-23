@@ -25,8 +25,8 @@
  ***************************************************************/
 ini_set('display_errors',1); error_reporting(E_ALL|E_STRICT);
 try {
-	$sourcefolder = 'loc11/'; 				// maybe you want to get this via CLI argument ...
-	$targetname = 'ilocConnect-v27-en.php';
+	$sourcefolder = 'locConnect2.8/'; 				// maybe you want to get this via CLI argument ...
+	$targetname = 'ilocConnect-v28-en-es.php';
 	$zipfilename = md5(time()).'archive.zip'; 		// replace with tempname()
 
 	// create a archive from the submitted folder
@@ -90,12 +90,12 @@ try {
 	} else throw new Exception('reading archive failed');
 	$zipfile->close();
 	unlink($zipfilename);
-	print "LocConnect v2.7 successfully installed. Delete ilocConnect-v27-en.php file immediately and configure necessary parameters in conf.php.";
+	print "LocConnect v2.8 successfully installed. Delete ilocConnect-v28-en-es.php file immediately and configure necessary parameters in conf.php.";
 	print "<br>Note: You must create a folder in your server to store uploaded files (XLIFF, LMC etc.) and grant Apache User/inet user read/write permission to it.";
 	print "<br>Note: Specify the created folder path in the 1st line of the conf.php.  Example: define('BASE_UPLOAD_PATH','c:/uploads/');";
 	print "<br>Note: You do not need to configure any databases to install LocConnect. It should work out of the box if the installation requirements are met.<br>";
-	print "<br> (c) Asanka Wasala, 2011 ";
-	print "<br><br> If you have completed the above steps, you may launch <a href='./index.php' target='_self'>LocConnect v2.7</a> now.";
+	print "<br> (c) Asanka Wasala, 2012 ";
+	print "<br><br> If you have completed the above steps, you may launch <a href='./index.php' target='_self'>LocConnect v2.8</a> now.";
 } catch (Exception $e) {
 	printf("Error:<br/>%s<br>%s>",$e->getMessage(),$e->getTraceAsString());
 };

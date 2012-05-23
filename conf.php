@@ -1,4 +1,5 @@
 <?php
+define('BASE_UPLOAD_PATH','c:/uploads/');			//UPLOAD FOLDER PATH
 date_default_timezone_set('Europe/Dublin');
 //ini_set('display_errors',1); error_reporting(E_ALL|E_STRICT); //Set php error display
 define('BASE_PATH',realpath('.')); 						
@@ -6,19 +7,22 @@ define('BASE_URL', dirname($_SERVER["SCRIPT_NAME"]));	    //folder path where lo
 //define('BASE_DB_URL', '../locConnect2.0/');	
 define('BASE_DB_URL', './');								// locConnect database location
 define('BASE_DEF_VAL', 'ON');
-define('BASE_VER', 'v2.5');									//locConnect version
-define('BASE_UPDATE', '18th October, 2010');				//last updated date
-define('BASE_EMAIL', 'connect@localisation.ie');			//locConnect email
+define('BASE_VER', 'v2.8');									//locConnect version
+define('BASE_UPDATE', '23rd May, 2012');				//last updated date
+define('BASE_EMAIL', 'Asanka.Wasala@ul.ie');			//locConnect email
 define('BASE_PREV_STYLE','none');                    //translation preview style none or glue
+
+
 /*Localisation Strings*/
 
 //header
 define('BASE_LOCCONNECT', 'locConnect');
 define('BASE_MOTO', 'conducting your components');
 
+
 define('BASE_TITLE', 'locConnect '.BASE_VER.' - Localisation Project Manager');
-define('BASE_H1', 'AUTUMN DEMO');
-define('BASE_H2', '11th November, 2010');
+define('BASE_H1', 'SOLAS');
+define('BASE_H2', 'Service-oriented localisation architecture solution');
 
 //common
 define('BASE_LATEST_PROJECTS', 'latest projects');
@@ -82,6 +86,7 @@ define('BASE_PMUI_PCTEMAIL', 'Contact email');
 define('BASE_PMUI_PLMC', 'LMC file');
 define('BASE_PMUI_PSRCF', 'Source text file');
 define('BASE_PMUI_PSRCT', 'Source text <br/> (if file is not selected)');
+define('BASE_PMUI_CLIENT', 'Client');
 
 //track project
 define('BASE_TP_AP', 'Active Projects');
@@ -98,10 +103,15 @@ define('BASE_T_STATUS', 'Status');
 define('BASE_T_WORKFLOW', 'Workflow');
 define('BASE_T_LOADING', 'Loading');
 $arr = array(
+ "DDC" => "Data Domain Classifier",
  "LKR" => "Localisation Knowledge Repository",
  "WFR" => "Workflow Recommender", 
  "LMC" => "XLIFF Phoenix", 
+ "DST" => "Domain-specific Translator",
  "RT" => "Translation Rating", 
+ "CMG" => "CMS-L10N Generator", 
+ "CMP" => "CMS-L10N Processor", 
+ "COMSIM" => "LocConnect Component Simulator", 
  "MT" => "Mapper" );
 $st = array(
  "Processing" => "Processing",
@@ -154,14 +164,14 @@ define('BASE_CP_RESERR_LARGE','The resource file you attempted to upload is too 
 define('BASE_CP_UPLOADERR','You cannot upload to the specified directory.');
 define('BASE_CP_UPLOADERR_RES','There was an error during the resource file upload.  Please try again.');
 define('BASE_CP_SUCCESS', 'Project Successfully Created');
-define('BASE_CP_SUCCESS_M1', 'Your source file upload was successful<br/>\n');
+define('BASE_CP_SUCCESS_M1', 'Your source file upload was successful<br/>');
 define('BASE_CP_SUCCESS_M2', 'Job ID assigned to this project is: ');
 define('BASE_CP_SUCCESS_M3', 'You can track the status of this project by clicking ');
 define('BASE_CP_SUCCESS_M4', 'here');
 define('BASE_CP_SUCCESS_M5', 'Your resource file was successfully uploaded and it can be accessed by Resource ID:');
 define('BASE_CP_UPLOADERR_SRC','There was an error during the source file upload.  Please try again.');
 define('BASE_CP_UPLOADERR_TXT','Please enter text to be translated and try again.');
-define('BASE_CP_SUCCESS_M6','Your source text has been successfully converted into XLIFF and a locConnect project has been created.<br/>\n');
+define('BASE_CP_SUCCESS_M6','Your source text has been successfully converted into XLIFF and a locConnect project has been created.<br/>');
 
 //delete
 define('BASE_D_SUCCESS', 'Project and associated files were successfully deleted.');
@@ -170,13 +180,17 @@ define('BASE_D_SUCCESS', 'Project and associated files were successfully deleted
 //xconv
 define('BASE_XCONV_PREVIEW', 'Preview');
 define('BASE_XCONV_BACK', 'Back to XLIFF Editor');
+define('BASE_PMUI_PSRCXLIFF', 'Source XLIFF file');
+define('BASE_PMUI_INPUT_SOURCE', 'Choose your input source:');
+define('BASE_PMUI_TEXT_INPUT', 'Text file or text input');
+define('BASE_PMUI_XLIFF_INPUT', 'XLIFF file');
 
 
 //locConnect UI Translations
 define('BASE_UI_TRANS_BY', '');
 
 $languages = array(
- "en" => ".",
+ "en" => ".", 
  "es" => "./es"
  );
 
@@ -186,7 +200,7 @@ $languages = array(
 
 function curPageName() {
  $pageURL = 'http';
- if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+ //if ($_SERVER["HTTPS"] == "on"){$pageURL .= "s";}
  $pageURL .= "://";
  if ($_SERVER["SERVER_PORT"] != "80") {
   $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];

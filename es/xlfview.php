@@ -172,6 +172,9 @@ $('a#closet').click(function(){ $('#translate').hide('slow');});
 	$doc->loadXML($out);
 	
     print '<center> <a href="#" id="trans"><h3 style="font-weight:bold; font-size:20px;">'.BASE_XLFV_TRAN.' </h3> </a></center>';
+	print '<center><p class="txt"><a id="closet" href="#"> <em>'.BASE_XLFV_HIDET.'</em> </a></p></center><br/>' ;
+	print "<br/><center><a class='txt' href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/download.php?id=".$id."'>".BASE_T_DXLIFF."</a>&nbsp;|&nbsp;<a class='txt' href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/xconv.php?id=".$id."&method=download'>".BASE_XLFV_DOWNTF."</a>&nbsp;|&nbsp;<a class='txt' href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/xconv.php?id=".$id."&method=view&style=".BASE_PREV_STYLE."'>".BASE_XLFV_PREVF."</a> </center><br/>";
+
     print '<div id="translate">';
 	print '<table class="trans" border="0" cellpadding="3" cellspacing="0" align="center"><tbody>';
 
@@ -206,8 +209,8 @@ $('a#closet').click(function(){ $('#translate').hide('slow');});
 					{
 					$k++;
 					$altval=$alt->nodeValue;
-					if ($k==1)print '<tr class="row"><td colspan="1" rowspan="'.(string)$altTrans->length.'">'.BASE_XLFV_ALT.'</td>'; else
-					print "<tr class='row'>";
+					if ($k==1)print '<tr class="row-no-click"><td colspan="1" rowspan="'.(string)$altTrans->length.'">'.BASE_XLFV_ALT.'</td>'; else
+					print "<tr class='row-no-click'>";
 					if ($altval!="") print '<td class="alt">'.$altval.'</td>';  else print '<td> <em>'.BASE_XLFV_ALTERR.'</em> </td>';
 					$temp="";
 					$length = $alt->attributes->length;
@@ -225,16 +228,17 @@ $('a#closet').click(function(){ $('#translate').hide('slow');});
 
 				} else
 				{
-				print '<tr class="row"><td colspan="4" rowspan="1" class="alt"> <em>'.BASE_XLFV_ALTERR.' </em> </td></tr>';
+				print '<tr class="row-no-click"><td colspan="4" rowspan="1" class="alt"> <em>'.BASE_XLFV_ALTERR.' </em> </td></tr>';
 				}
 
 			  }
 
 	}
-	print '</tbody></table>';
-    print '<center><p class="txt"><a id="closet" href="#"> <em>'.BASE_XLFV_HIDET.'</em> </a></p></center></div>' ;
+	print '</tbody></table></div>';
+    
 	
 	  print '<br/><center> <a href="#" id="meta"><h3 style="font-weight:bold; font-size:20px;">'.BASE_XLFV_META.'</h3> </a></center>';
+	  print '<center><p class="txt"><a id="close" href="#"> <em> hide Metadata </em> </a></p></center>' ;
     print '<div id="metadata">';
 	print '<table class="meta" border="0" cellpadding="2" cellspacing="0" align="center">';
 	
@@ -347,8 +351,8 @@ $('a#closet').click(function(){ $('#translate').hide('slow');});
 		//print '<tr class="blankrow"><td colspan="2" rowspan="1">&nbsp;</td></tr>';
 	}
 
-	print '</tbody></table>';
-    print '<center><p class="txt"><a id="close" href="#"> <em> hide Metadata </em> </a></p></center></div>' ;
+	print '</tbody></table></div>';
+    
 	print "<br/><center><a class='txt' href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/download.php?id=".$id."'>".BASE_T_DXLIFF."</a>&nbsp;|&nbsp;<a class='txt' href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/xconv.php?id=".$id."&method=download'>".BASE_XLFV_DOWNTF."</a>&nbsp;|&nbsp;<a class='txt' href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/xconv.php?id=".$id."&method=view&style=".BASE_PREV_STYLE."'>".BASE_XLFV_PREVF."</a> </center>";
 
 	

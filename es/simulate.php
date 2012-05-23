@@ -5,16 +5,20 @@
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
 require_once('./conf.php');
-require_once 'HTTP\Request2.php';
+require_once 'HTTP/Request2.php';
  $com=$_POST['com'];
  $id=$_POST['job'];
  $func=$_POST['api'];
  
 
 
-
-
-print "SIMULATING ".$com." and Project ID: ".$id."<br/><br/>";
+if ($func!='directjob' )
+{
+ print "<span style=\"color:red\">SIMULATING ".$com." and Project ID: ".$id." (Right click and view page source to see the LocConnect's response.)</span>\n\n\n";
+} else
+{
+	print "<span style=\"color:red\">PROJECT CREATION BY DIRECT SUBMISSION:(Right click and view page source to see the LocConnect's response.)</span>\n\n\n";;
+}
  
 if ($func=='status' )
 {

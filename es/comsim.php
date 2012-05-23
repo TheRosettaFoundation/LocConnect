@@ -21,7 +21,18 @@
 <td></td>
 <td>Component</td>
 <td>
-<select name="com"><option selected="selected">LKR</option><option>WFR</option><option>LMC</option><option>RT</option><option>MT</option></select>
+<select name="com">	<?php
+	foreach ($arr as $lkey => $lvalue) 
+	{	if (isset($_GET["lastcom"]))
+			if ($_GET["lastcom"]==$lkey)
+			print "<option selected=\"selected\">\n".$lkey."\n</option>\n";
+			else
+			print "<option>\n".$lkey."\n</option>\n";
+		else
+			print "<option>\n".$lkey."\n</option>\n";
+	}
+	?>
+</select>
 </td>
 </tr>
 <tr>
@@ -32,7 +43,13 @@
 $res = $db->query('Select PName, ID from Project where FinishDate is null Order by CreateDate Desc');
 foreach($res as $row)
 {
-print "<option value='".$row['ID']."'>".$row['ID']." - ".$row['PName']."</option>";
+	if (isset($_GET["lastid"]))
+			if ($_GET["lastid"]==$row['ID'])
+			print "<option value='".$row['ID']."' selected='selected'>".$row['ID']." - ".$row['PName']."</option>";
+			else
+			print "<option value='".$row['ID']."'>".$row['ID']." - ".$row['PName']."</option>";
+		else
+			print "<option value='".$row['ID']."'>".$row['ID']." - ".$row['PName']."</option>";
 }
 $db=NULL;
 ;?></select>
@@ -61,6 +78,11 @@ $db=NULL;
 <td></td>
 </tr>
 <tr><td><input name="api" value="get" type="radio"></td><td>Get Job</td><td></td></tr><tr>
+<tr>
+<td><input name="api" value="directjob" type="radio"></td>
+<td>Create job</td>
+<td><input name="datafile" type="file"></td>
+</tr>
 <td></td>
 <td></td>
 <td><input type="submit"><input type="reset"></td>

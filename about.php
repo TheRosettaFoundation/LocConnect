@@ -27,7 +27,7 @@ require_once('./conf.php');
 <div id="links">
 <ul>
 <li> <a href="./index.php"><?php print BASE_HOME;?></a> </li>
-<li> <a href="./pmui.php"><?php print BASE_NEW_PROJECT;?></a> </li>
+<li> <a href="./prompt.php"><?php print BASE_NEW_PROJECT;?></a> </li>
 <li> <a href="./trackproj.php"><?php print BASE_TRACK_PROJECTS;?></a></li>
 <li> <a href="./about.php"><?php print  BASE_ABOUT;?></a> </li>
 </ul>
@@ -44,7 +44,7 @@ require_once('./conf.php');
 <p><em> <?php print  BASE_ABOUT_LAST_MODIFIED;?><?php print  BASE_UPDATE;?></em></p>
 <p><?php print  BASE_ABOUT_DESC;?></p>
 <br />
-<p>The locConnect was developed by Asanka Wasala - A PhD student @ Localisation Research Centre, University of Limerick, Ireland.</p>
+<p>The locConnect has been developed by Asanka Wasala - A PhD student @ Localisation Research Centre, University of Limerick, Ireland.</p>
 <br/>
 <p><em> <?php print BASE_UI_TRANS_BY;?></p></em>
 </div>

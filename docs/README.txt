@@ -28,10 +28,15 @@
  The Latest Version
  ------------------
 
-  The latest version is v2.7 last modified on 13/04/2011.
+  The latest version is v2.8 last modified on 23/05/2012.
 
   Version History
   ---------------
+  LocConnect 2.8 Added more components and minor changes to conf.php, prompt.php and Spanish version. Changed 	 			 HTTP\Request2.php to HTTP/Request2.php 
+		 Added new API call new_project which by passes LocConnect UI and create projects 
+		 Improved Component Simulator to remember last component and project ID
+		 Added Component Simulator as a component that can be called through a workflow.
+		 Added new API function (new_project) to component simulator.
   LocConnect 2.7 Modified workflow display to accommodate more components, simplified the component registration process (see section 'Adding New Components').
 		 Modifed component simulator to use component registration information found in conf.php, Fixed issues associated with deleting projects.
 		 Note: this version does not support SSL (i.e. HTTPS)

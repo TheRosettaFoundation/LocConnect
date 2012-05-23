@@ -85,7 +85,8 @@ if (strtolower($msg)=='complete')
 				
 				$tool=$task->getAttribute("tool-id");
 				$wforder=(int)$task->getAttribute("order");
-				$wforder=$wforder+2;
+				//if ($step==1) $wforder=$wforder+1; else	$wforder=$wforder+2;
+				$wforder=$wforder+1;
 				$statement="INSERT INTO Demo(Job, Com, Status, WOrder) VALUES ('".$id."', '".$tool."','waiting','".(string)$wforder."')";
 				//$st2=$st2."<tool>".$statement."</tool>";
 				$count = $db->exec($statement);

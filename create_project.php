@@ -41,7 +41,7 @@ $("#datepicker1").datepicker();
 <div id="links">
 <ul>
  <li> <a href="./index.php"><?php print BASE_HOME;?></a> </li>
-			<li> <a href="./pmui.php"><?php print BASE_NEW_PROJECT;?></a> </li>
+			<li> <a href="./prompt.php"><?php print BASE_NEW_PROJECT;?></a> </li>
 			<li> <a href="./trackproj.php"><?php print BASE_TRACK_PROJECTS;?></a></li>
 			<li> <a href="./about.php"><?php print  BASE_ABOUT;?></a> </li>
 </ul>
@@ -55,7 +55,7 @@ $("#datepicker1").datepicker();
 
 
 <?php
-require_once 'HTTP\Request2.php';
+require_once 'HTTP/Request2.php';
 function sendResource($id, $type, $metdata, $desc, $content)
 {
     $res="";
@@ -86,7 +86,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
       $allowed_filetypes = array('.txt'); // These will be the types of file that will pass the validation.	  
 	  $allowed_filetypes1 = array('.lmc',''); // These will be the types of file that will pass the validation.	  
       $max_filesize = 524288; // Maximum filesize in BYTES (currently 0.5MB).
-      $upload_path = 'c:/uploads/'; // The place the files will be uploaded to
+      $upload_path = BASE_UPLOAD_PATH; // The place the files will be uploaded to
     $filename = $_FILES["source_text_file"]["name"]; // Get the name of the file (including file extension).
 	$filename1 = $_FILES["lmc_file"]["name"]; // Get the name of the file (including file extension).
 	$ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
@@ -222,7 +222,7 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 		
 		
 		
-		echo BASE_CP_SUCCESS_M2."<strong>".$project_ID."</strong><br/>\n";
+		echo BASE_CP_SUCCESS_M2."<strong>".$project_ID."</strong><br/>";
 		echo BASE_CP_SUCCESS_M3."<a href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/track.php?id=".$project_ID."'>".BASE_CP_SUCCESS_M4."</a><br>";
 		 //echo $content;
 		 if ($is_resource_attached) {
@@ -414,7 +414,7 @@ if($content!=""){
 		
 		
 		
-		echo BASE_CP_SUCCESS_M2.$project_ID."</strong><br/>\n";
+		echo BASE_CP_SUCCESS_M2."<strong>".$project_ID."</strong><br/>";
 		echo BASE_CP_SUCCESS_M3."<a href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/track.php?id=".$project_ID."'>".BASE_CP_SUCCESS_M4."</a><br>";
 		 //echo $content;
 		 if ($is_resource_attached) {
