@@ -283,14 +283,31 @@ error_reporting(E_ALL);
 			  {
 				$sourceNode=$node->getElementsByTagName("source");
 				if ($sourceNode->length>0) $source=$sourceNode->item(0)->nodeValue ;else $source=BASE_XLFV_SRCERR;
-				if (trim($source)=="") $source=BASE_XLFV_SRCERR;
+				if (trim($source)=="") {
+                    $source=BASE_XLFV_SRCERR;
+                } else {
+                    $regex = "~<entity-node ref=\"(.*)\">~"; //entity node regex
+                    $replace = "<a target='_blank' href='$1'>";
+                    $source = preg_replace($regex, $replace, $source);
+                    $regex = "~</entity-node>~";              //closing entity node
+                    $replace = "</a>";
+                    $source = preg_replace($regex, $replace, $source);
+                }
 				$targetNode=$node->getElementsByTagName("target");
 				//print $node->hasElement("target");
 				if ($targetNode->length>0) $target=$targetNode->item(0)->nodeValue; else $target=BASE_XLFV_TGTERR;
 				if (trim($target)=="") $target=BASE_XLFV_TGTERR;
 				$altTrans=$node->getElementsByTagName("alt-trans");
 				print '<tr class="header"><td colspan="4" rowspan="1">'.$name.'</td></tr>';
-				print '<tr class="row" id="src"><td>'.BASE_XLFV_SRC.'</td><td colspan="3" rowspan="1">'.htmlentities($source,ENT_QUOTES,'UTF-8').'</td></tr><tr id="tgt"><td>'.BASE_XLFV_TGT.'</td><td colspan="3" rowspan="1">'.htmlentities($target,ENT_QUOTES,'UTF-8').'</td></tr>';
+				print '<tr class="row" id="src">';
+                    print '<td>'.BASE_XLFV_SRC.'</td>';
+                    //print '<td colspan="3" rowspan="1">'.htmlentities($source,ENT_QUOTES,'UTF-8').'</td>';
+                    print '<td colspan="3" rowspan="1">'.$source.'</td>';
+                print '</tr>';
+                print '<tr id="tgt">';
+                    print '<td>'.BASE_XLFV_TGT.'</td>';
+                    print '<td colspan="3" rowspan="1">'.htmlentities($target,ENT_QUOTES,'UTF-8').'</td>';
+                print '</tr>';
 				//print "<br>".$name."<br>".$source."<br>".$target;
 
 
