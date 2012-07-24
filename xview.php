@@ -156,6 +156,7 @@ error_reporting(E_ALL);
 	print '<table class="meta" border="0" cellpadding="2" cellspacing="0" align="center">';
 	$doc = new DOMDocument();
 	$doc->loadXML($out);
+    //$doc->load("/home/spaceindaver/workspace/sample_files/sample.xlf"); //local test file
 
 	// project meta data
 	$nodes = $doc->getElementsByTagName ("pmui-data");
@@ -276,49 +277,58 @@ error_reporting(E_ALL);
 	//print '<tr class="header"><td colspan="2" rowspan="1">XLIFF Count Group Metadata</td></tr>';
 	foreach ($nodes as $node)
 	{
-
-
-			$name =$node->getAttribute("id");
-			if ($node->hasChildNodes())
-			  {
-				$sourceNode=$node->getElementsByTagName("source");
-				if ($sourceNode->length>0) $source=$sourceNode->item(0)->nodeValue ;else $source=BASE_XLFV_SRCERR;
-				if (trim($source)=="") {
-                    $source=BASE_XLFV_SRCERR;
-                } else {
-                    $regex = "~<entity-node ref=\"(.*)\">~"; //entity node regex
-                    $replace = "<a target='_blank' href='$1'>";
-                    $source = preg_replace($regex, $replace, $source);
-                    $regex = "~</entity-node>~";              //closing entity node
-                    $replace = "</a>";
-                    $source = preg_replace($regex, $replace, $source);
+		$name =$node->getAttribute("id");
+		if ($node->hasChildNodes())
+		{
+            //Check if the current segment is supposed to be translated
+            $translate = $node->getAttribute('translate');
+            $translateSeg = true;
+            if($translate !== NULL) {
+                if($translate == 'no') {
+                    $translateSeg = false;
                 }
-				$targetNode=$node->getElementsByTagName("target");
-				//print $node->hasElement("target");
-				if ($targetNode->length>0) $target=$targetNode->item(0)->nodeValue; else $target=BASE_XLFV_TGTERR;
-				if (trim($target)=="") $target=BASE_XLFV_TGTERR;
-				$altTrans=$node->getElementsByTagName("alt-trans");
-				print '<tr class="header"><td colspan="4" rowspan="1">'.$name.'</td></tr>';
-				print '<tr class="row" id="src">';
+            }
+
+			$sourceNode=$node->getElementsByTagName("source");
+    		if ($sourceNode->length>0) $source=$sourceNode->item(0)->nodeValue ;else $source=BASE_XLFV_SRCERR;
+			if (trim($source)=="") {
+                $source=BASE_XLFV_SRCERR;
+            } else {
+                $regex = "~<entity-node ref=\"(.*)\">~"; //entity node regex
+                $replace = "<a target='_blank' href='$1'>";
+                $source = preg_replace($regex, $replace, $source);
+                $regex = "~</entity-node>~";              //closing entity node
+                $replace = "</a>";
+                $source = preg_replace($regex, $replace, $source);
+            }
+			$targetNode=$node->getElementsByTagName("target");
+			//print $node->hasElement("target");
+			if ($targetNode->length>0) $target=$targetNode->item(0)->nodeValue; else $target=BASE_XLFV_TGTERR;
+			if (trim($target)=="") $target=BASE_XLFV_TGTERR;
+			$altTrans=$node->getElementsByTagName("alt-trans");
+			print '<tr class="header"><td colspan="4" rowspan="1">'.$name.'</td></tr>';
+			print '<tr class="row" id="src">';
+                if($translateSeg) {
                     print '<td>'.BASE_XLFV_SRC.'</td>';
-                    //print '<td colspan="3" rowspan="1">'.htmlentities($source,ENT_QUOTES,'UTF-8').'</td>';
-                    print '<td colspan="3" rowspan="1">'.$source.'</td>';
-                print '</tr>';
-                print '<tr id="tgt">';
-                    print '<td>'.BASE_XLFV_TGT.'</td>';
-                    print '<td colspan="3" rowspan="1">'.htmlentities($target,ENT_QUOTES,'UTF-8').'</td>';
-                print '</tr>';
-				//print "<br>".$name."<br>".$source."<br>".$target;
+                    print '<td colspan="3" rowspan="1">'.htmlentities($source,ENT_QUOTES,'UTF-8').'</td>';
+                    //print '<td colspan="3" rowspan="1">'.$source.'</td>';
+                } else {
+                    print '<td class="no-translate">'.BASE_XLFV_SRC.'</td>';
+                    print '<td colspan="3" rowspan="1" class="no-translate">'.htmlentities($source,ENT_QUOTES,'UTF-8').'</td>';
+                    //print '<td colspan="3" rowspan="1">'.$source.'</td>';
+                }
+            print '</tr>';
+            print '<tr id="tgt">';
+                print '<td>'.BASE_XLFV_TGT.'</td>';
+                print '<td colspan="3" rowspan="1">'.htmlentities($target,ENT_QUOTES,'UTF-8').'</td>';
+            print '</tr>';
+			//print "<br>".$name."<br>".$source."<br>".$target;
 
-
-
-				if ($altTrans->length>0)
+			if ($altTrans->length>0)
+			{
+				$k=0;
+				foreach ($altTrans as $alt)
 				{
-
-
-					$k=0;
-					foreach ($altTrans as $alt)
-					{
 					$k++;
 					$altval=$alt->nodeValue;
 					if ($k==1)print '<tr class="row"><td colspan="1" rowspan="'.(string)$altTrans->length.'">'.BASE_XLFV_ALT.'</td>'; else
@@ -326,28 +336,24 @@ error_reporting(E_ALL);
 					if ($altval!="") print '<td class="alt">'.$altval.'</td>';  else print '<td> <em>'.BASE_XLFV_ALTERR.' </em> </td>';
 					$temp="";
 					$length = $alt->attributes->length;
-						for ($i = 0; $i < $length; ++$i)
-						{
-							$att =$alt->attributes->item($i)->name;
-							$val=$alt->attributes->item($i)->value;
-							if ($att!="match-quality") $temp=$temp.$att. " : ".$val. "<br/>";
-						}
-						$mq =$alt->getAttribute("match-quality");
-						if ($mq=="" or $mq==NULL) $mq="N/A";
-						print '<td class="red">'.$mq.'</td><td class="txt">'.$temp.'</td></tr>';
+					for ($i = 0; $i < $length; ++$i)
+					{
+						$att =$alt->attributes->item($i)->name;
+						$val=$alt->attributes->item($i)->value;
+						if ($att!="match-quality") $temp=$temp.$att. " : ".$val. "<br/>";
 					}
-
-
-				} else
-				{
-				print '<tr class="row"><td colspan="4" rowspan="1" class="alt"> <em>'.BASE_XLFV_ALTERR.'</em> </td></tr>';
+					$mq =$alt->getAttribute("match-quality");
+					if ($mq=="" or $mq==NULL) $mq="N/A";
+					print '<td class="red">'.$mq.'</td><td class="txt">'.$temp.'</td></tr>';
 				}
+			} else {
+			print '<tr class="row"><td colspan="4" rowspan="1" class="alt"> <em>'.BASE_XLFV_ALTERR.'</em> </td></tr>';
+		}
+    }
 
-			  }
-
-	}
-	print '</tbody></table>';
-    print '<center><p class="txt"><a id="closet" href="#"> <em> '.BASE_XLFV_HIDET.' </em> </a></p></center></div>' ;
+}
+print '</tbody></table>';
+print '<center><p class="txt"><a id="closet" href="#"> <em> '.BASE_XLFV_HIDET.' </em> </a></p></center></div>' ;
 ;?>
 
         </div>
