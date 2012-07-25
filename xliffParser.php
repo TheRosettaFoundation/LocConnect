@@ -55,18 +55,22 @@ class XliffParser
                     print '<tr class="row" id="src">';
                     if($translateSeg) {
                         print '<td>'.BASE_XLFV_SRC.'</td>';
-                        print '<td colspan="3" rowspan="1">'.htmlentities($source,ENT_QUOTES,'UTF-8').'</td>';
-                        //print '<td colspan="3" rowspan="1">'.$source.'</td>';
+                        print '<td colspan="3" rowspan="1">';
+                            print htmlentities($source,ENT_QUOTES,'UTF-8');
+                            //print $source;
+                        print '</td>';
                     } else {
                         print '<td class="no-translate">'.BASE_XLFV_SRC.'</td>';
-                        print '<td colspan="3" rowspan="1" class="no-translate">'.htmlentities($source,ENT_QUOTES,'UTF-8').'</td>';
-                        //print '<td colspan="3" rowspan="1">'.$source.'</td>';
+                        print '<td colspan="3" rowspan="1" class="no-translate" title="Do not translate this text">';
+                            print htmlentities($source,ENT_QUOTES,'UTF-8');
+                            //print $source;
+                        print '</td>';
                     }
                     print '</tr>';
                     print '<tr id="tgt">';
                     print '<td>'.BASE_XLFV_TGT.'</td>';
                     print '<td colspan="3" rowspan="1" ';
-                    if($download) {
+                    if($download && $translateSeg) {
                         print "class='dblclick' id='$name'";
                     }
                     print '>'.htmlentities($target,ENT_QUOTES,'UTF-8').'</td>';
