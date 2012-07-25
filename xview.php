@@ -153,6 +153,8 @@ error_reporting(E_ALL);
     $mParser = new XliffParser($out);
     $mParser->printMetaData();
     $mParser->printTranslationInfo();
+    print "<br />";
+    $mParser->printLegend();
 
 ;?>
 

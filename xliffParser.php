@@ -203,4 +203,15 @@ class XliffParser
             print "<br/>";
         }
     }
+
+    function printLegend()
+    {
+        print "<center>";
+            print "<h3>Legend</h3>";
+        print "</center>";
+        print '<table class="trans" border="0" cellpadding="3" cellspacing="0" align="center"><tbody>';
+            print "<tr class='header'><td>Format</td><td>Meaning</td></tr>";
+            print "<tr><td class='no-translate'>Sample</td><td>Text marked as \"Do Not Translate\"</td></tr>";
+        print "</table>";
+    }
 }

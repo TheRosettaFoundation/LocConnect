@@ -169,6 +169,7 @@ $('a#closet').click(function(){ $('#translate').hide('slow');});
 
     $mParser = new XliffParser($out);
     $mParser->printTranslationInfo(true);
+    $mParser->printLegend();
     print "<br />";
     $mParser->printMetaData();
     $mParser->printDownloadInfo();
