@@ -3,7 +3,7 @@
 <head>
  <?php
  /*------------------------------------------------------------------------*
- * © 2010 University of Limerick. All rights reserved. This material may  *
+ * ï¿½ 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
@@ -83,11 +83,11 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	return $res;
 }
 
-      $allowed_filetypes = array('.txt'); // These will be the types of file that will pass the validation.	  
-	  $allowed_filetypes1 = array('.lmc',''); // These will be the types of file that will pass the validation.	  
-      $max_filesize = 524288; // Maximum filesize in BYTES (currently 0.5MB).
-      $upload_path = BASE_UPLOAD_PATH; // The place the files will be uploaded to
-    $filename = $_FILES["source_text_file"]["name"]; // Get the name of the file (including file extension).
+        $allowed_filetypes = array('.txt'); // These will be the types of file that will pass the validation.	  
+	$allowed_filetypes1 = array('.lmc',''); // These will be the types of file that will pass the validation.	  
+        $max_filesize = 524288; // Maximum filesize in BYTES (currently 0.5MB).
+        $upload_path = BASE_UPLOAD_PATH; // The place the files will be uploaded to
+        $filename = $_FILES["source_text_file"]["name"]; // Get the name of the file (including file extension).
 	$filename1 = $_FILES["lmc_file"]["name"]; // Get the name of the file (including file extension).
 	$ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
 	$ext1 = substr($filename1, strpos($filename1,'.'), strlen($filename1)-1); // Get the extension from the filename.

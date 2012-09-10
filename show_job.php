@@ -2,7 +2,7 @@
 require_once('./conf.php');
 header('Content-Type: text/html; charset=utf-8');
 /*------------------------------------------------------------------------*
- * © 2010 University of Limerick. All rights reserved. This material may  *
+ * ï¿½ 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
@@ -14,7 +14,7 @@ function showFileData($id, $com)
     //open the database
     $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
 	$result = $db->query('SELECT fileData FROM Demo where job="'.$id.'" and com="'.strtoupper($com).'"');
-	$data= stripslashes($result->fetchColumn());
+	$data= stripcslashes($result->fetchColumn());
 	$fileData="<content>".htmlspecialchars($data, ENT_QUOTES, "UTF-8")."</content>";
     // close the database connection
     $db = NULL;

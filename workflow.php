@@ -1,7 +1,7 @@
 <?php
  require('./conf.php');
  /*------------------------------------------------------------------------*
- * © 2010 University of Limerick. All rights reserved. This material may  *
+ * ï¿½ 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
@@ -38,6 +38,7 @@
   {
    //on going job
     $result = $db->query('SELECT Com FROM Demo where Job="'.$id.'" and WOrder<'.(string)$currentstep.' order by WOrder ASC ');
+    
 	$wf1="";
 	foreach($result as $r)
 	{
@@ -153,8 +154,10 @@ if (preg_match($pattern, $str, $matches))
 	$temp3=preg_replace("/LMC/", $rep1."LMC-red".$rep2, $temp3);*/
 	$temp3=preg_replace("/&nbsp;\->&nbsp;/", $re1."next-red".$re2, $temp3);
   }
-  
-  $w=$temp1.$temp3.$temp2;
+  $w="";
+  $w.=isset ($temp1)?$temp1:"";
+  $w.=isset ($temp3)?$temp3:"";
+  $w.=isset ($temp2)?$temp2:"";
   $w=str_replace("<span class='green'>","",$w);
   $w=str_replace("<span class='red'>","",$w);
   $w=str_replace("<span class='grey'>","",$w);
