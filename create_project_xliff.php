@@ -207,7 +207,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
      /* XML processing goes here */
         $headers = $xliff->getElementsByTagName( 'header' );
         
-        if($headers->lenght==0){// creat a header element if it dose not exist
+        if($headers==null||$headers->lenght==0){// creat a header element if it dose not exist
             $fileElement = $xliff->getElementsByTagName( 'file' )->item(0);
             $header=$xliff->createElement('header');
             $fileElement->appendChild($header);
@@ -290,7 +290,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
 
 </div>
 <div id="bottom">
- <div id="email"><a href="mailto:<?php print BASE_EMAIL;?>"><?php print  BASE_EMAIL;?></a></div>
+<div id="email"><a href="mailto:<?php print BASE_EMAIL;?>"><?php print  BASE_EMAIL;?></a></div>
 <div id="validtext">
 <p>Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a>
 | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></p>

@@ -1,5 +1,5 @@
 <?php
-define('BASE_UPLOAD_PATH','c:/uploads/');			//UPLOAD FOLDER PATH
+define('BASE_UPLOAD_PATH',dirname($_SERVER["SCRIPT_FILENAME"]).'/uploads/');			//UPLOAD FOLDER PATH
 date_default_timezone_set('Europe/Dublin');
 //ini_set('display_errors',1); error_reporting(E_ALL|E_STRICT); //Set php error display
 define('BASE_PATH',realpath('.')); 						
