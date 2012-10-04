@@ -207,7 +207,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
      /* XML processing goes here */
         $headers = $xliff->getElementsByTagName( 'header' );
         
-        if($headers==null||$headers->lenght==0){// creat a header element if it dose not exist
+        if($headers==null||sizeof($headers)==0){// creat a header element if it dose not exist
             $fileElement = $xliff->getElementsByTagName( 'file' )->item(0);
             $header=$xliff->createElement('header');
             $fileElement->appendChild($header);
