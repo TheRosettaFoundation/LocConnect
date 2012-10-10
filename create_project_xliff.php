@@ -95,7 +95,9 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	
 	$project_name=$_POST['project_name'];
 	$project_desc=$_POST['project_description'];
-	$domain=$_POST['domain'];
+	if(isset($_POST['domain'])) {
+        $domain=$_POST['domain'];
+    }
 	$start_date=$_POST['start_date'];
 	$deadline=$_POST['deadline'];
 	$budget=$_POST['budget'];
