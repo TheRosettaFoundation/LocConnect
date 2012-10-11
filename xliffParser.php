@@ -26,11 +26,17 @@ class XliffParser
             if ($node->hasChildNodes())
             {
                 //Check if the current segment is supposed to be translated
-                $translate = $node->getAttribute('translate');
+                $tag = $node;
+                $foundTransAtt = false;
                 $translateSeg = true;
-                if($translate !== NULL) {
-                    if($translate == 'no') {
-                        $translateSeg = false;
+                while(strcasecmp($tag->nodeName, "file") != 0 && !($foundTransAtt)) {
+                    $translate = $tag->getAttribute('translate');
+                    if($translate !== NULL) {
+                        if($translate == 'no') {
+                            $translateSeg = false;
+                        }
+                        $foundTransAtt = true;
+                        $tag = $tag->parentNode;
                     }
                 }
                         
