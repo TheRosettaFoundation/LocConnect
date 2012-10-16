@@ -62,12 +62,16 @@ class XliffParser
                                         if($ref == NULL) {
                                             $ref = $child->getAttribute("disambigIdentRef");
                                         }
+                                        if($ref == NULL) {
+                                            $ref = $child->getAttribute("comment");
+                                        }
                                         if($ref != NULL) {
                                             $source .= "<sup><a target='_blank' href='$ref'>[ref]</a></sup>";
-                                            $comment = $child->getAttribute('comment');
-                                            if($comment != NULL) {
-                                                $comment_list[$text] = $comment;
-                                            }
+                                            // URL got moved to comment so this is no longer relevant
+                                            //$comment = $child->getAttribute('comment');
+                                            //if($comment != NULL) {
+                                                //$comment_list[$text] = $comment;
+                                            //}
                                             $reference_list[$text] = $ref;
                                         }
                                     } else if(strcasecmp($mtype, "x-DNT") == 0 || strcasecmp($mtype, "preserve") == 0) {
