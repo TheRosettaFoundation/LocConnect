@@ -117,6 +117,7 @@
   e.g. define('BASE_DB_URL', 'http://www.yourdomain.com/db/en/');
   Step 3: Configure components (See Adding New Components section).
   Step 4: Set-up language packs and respective directories to store them. Modify $languages array to include installed language packs (see section on Lannguage Pack Installation).
+  Step 5: Make sure the SQLite file is executable. Also, the directory that the SQLite file is in must be executable.
   
   $languages = array(
 		"en" => ".",
