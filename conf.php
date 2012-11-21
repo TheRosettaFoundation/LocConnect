@@ -104,6 +104,8 @@ define('BASE_T_WORKFLOW', 'Workflow');
 define('BASE_T_LOADING', 'Loading');
 $arr = array(
  "DDC" => "Data Domain Classifier",
+ "EXT" => "Extractor",
+ "MGR" => "Merger",
  "LKR" => "Localisation Knowledge Repository",
  "WFR" => "Workflow Recommender", 
  "LMC" => "XLIFF Phoenix", 

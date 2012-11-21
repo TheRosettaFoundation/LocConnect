@@ -113,7 +113,9 @@ $arr = array(
  "CMG" => "Generador de CMS-L10N", 
  "CMP" => "Procesador de CMS-L10N", 
  "COMSIM" => "LocConnect Component Simulator", 
- "DST" => "Traductor de ámbito específico"
+ "DST" => "Traductor de ámbito específico",
+ "EXT" => "Extractor",
+ "MGR" => "Merger"
  );
 $st = array(
  "Processing" => "En proceso",

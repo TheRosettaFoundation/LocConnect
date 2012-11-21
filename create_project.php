@@ -83,7 +83,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	return $res;
 }
 
-        $allowed_filetypes = array('.txt'); // These will be the types of file that will pass the validation.	  
+        $allowed_filetypes = array('.txt', '.html', '.doc'); // These will be the types of file that will pass the validation.	  
         $allowed_filetypes1 = array('.lmc',''); // These will be the types of file that will pass the validation.	  
         $max_filesize = 524288; // Maximum filesize in BYTES (currently 0.5MB).
         $upload_path = BASE_UPLOAD_PATH; // The place the files will be uploaded to
@@ -120,8 +120,8 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	
    // Check if the filetype is allowed, if not DIE and inform the user.
    
-   if ($ext!="") 
-   {
+if ($ext!="") 
+{
    
  if(!in_array($ext,$allowed_filetypes))
       die(BASE_CP_SOURCEERR);
@@ -305,16 +305,20 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 		 /* XML processing end */
 		 
 		 
-		 
-		 $statement="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',1)";
-		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '','WFR','waiting',2)";
-		 $statement3="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."')";
+		 $statement0="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
+                 $statement="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',2)";
+//		 $statement="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
+//                 
+//		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','waiting',3)";
+//                 
+		 $statement3="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
 		//echo $statement."<br>"; 
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+                 $count = $db->exec($statement0);
 		 $count = $db->exec($statement);
-		 $count = $db->exec($statement1);
+//		 $count = $db->exec($statement1);
 		 $count = $db->exec($statement3);
 		 $db= null;
 		 }  catch(PDOException $e)
