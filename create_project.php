@@ -89,8 +89,9 @@ function sendResource($id, $type, $metdata, $desc, $content)
         $upload_path = BASE_UPLOAD_PATH; // The place the files will be uploaded to
         $filename = $_FILES["source_text_file"]["name"]; // Get the name of the file (including file extension).
 	$filename1 = $_FILES["lmc_file"]["name"]; // Get the name of the file (including file extension).
-	$ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
-	$ext1 = substr($filename1, strpos($filename1,'.'), strlen($filename1)-1); // Get the extension from the filename.
+        
+	$ext = substr($filename, strrpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
+	$ext1 = substr($filename1, strrpos($filename1,'.'), strlen($filename1)-1); // Get the extension from the filename.
 	
 	
 	$project_name=$_POST['project_name'];
@@ -304,22 +305,22 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 		 
 		 /* XML processing end */
 		 
-		 
-		 $statement0="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
-                 $statement="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',2)";
-//		 $statement="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
-//                 
-//		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','waiting',3)";
-//                 
-		 $statement3="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
+		 // workflow recommender, lol
+		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
+		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
+		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','waiting',3)";
+                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
+                 
+		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
 		//echo $statement."<br>"; 
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
-                 $count = $db->exec($statement0);
-		 $count = $db->exec($statement);
-//		 $count = $db->exec($statement1);
+                 $count = $db->exec($statement1);
+		 $count = $db->exec($statement2);
 		 $count = $db->exec($statement3);
+		 $count = $db->exec($statement4);
+                 $count = $db->exec($statement5);
 		 $db= null;
 		 }  catch(PDOException $e)
 		  {
@@ -413,6 +414,8 @@ if ($tmpName1)
 
    
 if($content!=""){
+    
+         $filename = "filename.txt";
          print "<h2>".BASE_CP_SUCCESS."</h2>";
          echo BASE_CP_SUCCESS_M6; 
 		
@@ -501,17 +504,21 @@ if($content!=""){
 		 /* XML processing end */
 		 
 		 
-		 
-		 $statement="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',1)";
-		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '','WFR','waiting',2)";
-		 $statement3="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."')";
-		//echo $statement."<br>"; 
+		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
+		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
+		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','waiting',3)";
+                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
+		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
+		 //echo $statement3."<br>"; 
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
-		 $count = $db->exec($statement);
+		 
 		 $count = $db->exec($statement1);
-		 $count = $db->exec($statement3);
+		 $count = $db->exec($statement2);
+                 $count = $db->exec($statement3);
+                 $count = $db->exec($statement4);
+                 $count = $db->exec($statement5);
 		 $db= null;
 		 }  catch(PDOException $e)
 		  {
