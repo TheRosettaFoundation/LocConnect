@@ -261,8 +261,9 @@ function sendResource($id, $type, $metdata, $desc, $content)
          {
              $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
              $count = $db->exec($statement1);
-             if($count==FALSE) die(BASE_CP_UPLOADERR_SRC);
+             if($count==FALSE) die("<p>SQL query: <p>".$statement1."  ... failed");
              $count = $db->exec($statement3);
+             if($count==FALSE) die("<p>SQL query: <p>".$statement3."  ... failed");
              $db= null;
          }catch(PDOException $e)
          {
