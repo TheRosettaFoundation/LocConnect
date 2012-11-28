@@ -148,6 +148,7 @@ if ($ext!="")
 	$tmpName=$_FILES['source_text_file']['tmp_name'];
 	$fp      = fopen($tmpName, 'r');
 	$content = fread($fp, filesize($tmpName));
+        $content=base64_encode($content);
 	//$content=str_replace('\'','\'\'',$content);
 	//$content=str_replace('\"','\"\"',$content);
 	fclose($fp);
@@ -357,6 +358,7 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 
 	
 	$content = $raw_text;
+        $content=base64_encode($content);
 	$tmpName1=$_FILES['lmc_file']['tmp_name'];
 	if ($tmpName1)
 	{
