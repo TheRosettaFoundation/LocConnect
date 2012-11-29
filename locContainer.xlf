@@ -7,7 +7,7 @@
 	   </phase-group>
 	  <reference>
         <internal-file form='text'>
-           <converted-file fileformat='text'/>
+           <converted-file fileformat='base64'/>
         </internal-file>
       </reference>
 	  <reference>
