@@ -148,6 +148,7 @@ if ($ext!="")
 	$tmpName=$_FILES['source_text_file']['tmp_name'];
 	$fp      = fopen($tmpName, 'r');
 	$content = fread($fp, filesize($tmpName));
+        $content=base64_encode($content);
 	//$content=str_replace('\'','\'\'',$content);
 	//$content=str_replace('\"','\"\"',$content);
 	fclose($fp);
@@ -306,21 +307,30 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 		 /* XML processing end */
 		 
 		 // workflow recommender, lol
+
 //		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
 //		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
 		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','pending',1)";
 //                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
+
                  
 		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
-		//echo $statement."<br>"; 
+		 ///echo $statement1."<br>"; 
+                 
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
 //                 $count = $db->exec($statement1);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement1."  ... failed");
 //		 $count = $db->exec($statement2);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement2."  ... failed");
 		 $count = $db->exec($statement3);
+                 if($count==FALSE) die("<p>SQL query: <p>".$statement3."  ... failed");
 //		 $count = $db->exec($statement4);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement4."  ... failed");
+
                  $count = $db->exec($statement5);
+                 if($count==FALSE) die("<p>SQL query: <p>".$statement5."  ... failed");
 		 $db= null;
 		 }  catch(PDOException $e)
 		  {
@@ -351,6 +361,7 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 
 	
 	$content = $raw_text;
+        $content=base64_encode($content);
 	$tmpName1=$_FILES['lmc_file']['tmp_name'];
 	if ($tmpName1)
 	{
@@ -504,6 +515,7 @@ if($content!=""){
 		 /* XML processing end */
 		 
 		 
+
 //		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
 //		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
 		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','pending',1)";
@@ -513,12 +525,16 @@ if($content!=""){
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
-		 
-//		 $count = $db->exec($statement1);
+//                 $count = $db->exec($statement1);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement1."  ... failed");
 //		 $count = $db->exec($statement2);
-                 $count = $db->exec($statement3);
-//                 $count = $db->exec($statement4);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement2."  ... failed");
+		 $count = $db->exec($statement3);
+                 if($count==FALSE) die("<p>SQL query: <p>".$statement3."  ... failed");
+//		 $count = $db->exec($statement4);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement4."  ... failed");
                  $count = $db->exec($statement5);
+                 if($count==FALSE) die("<p>SQL query: <p>".$statement5."  ... failed");
 		 $db= null;
 		 }  catch(PDOException $e)
 		  {
