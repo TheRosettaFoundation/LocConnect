@@ -306,20 +306,20 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 		 /* XML processing end */
 		 
 		 // workflow recommender, lol
-		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
-		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
-		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','waiting',3)";
-                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
+//		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
+//		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
+		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','pending',1)";
+//                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
                  
 		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
 		//echo $statement."<br>"; 
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
-                 $count = $db->exec($statement1);
-		 $count = $db->exec($statement2);
+//                 $count = $db->exec($statement1);
+//		 $count = $db->exec($statement2);
 		 $count = $db->exec($statement3);
-		 $count = $db->exec($statement4);
+//		 $count = $db->exec($statement4);
                  $count = $db->exec($statement5);
 		 $db= null;
 		 }  catch(PDOException $e)
@@ -504,20 +504,20 @@ if($content!=""){
 		 /* XML processing end */
 		 
 		 
-		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
-		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
-		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','waiting',3)";
-                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
+//		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
+//		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
+		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','pending',1)";
+//                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
 		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
 		 //echo $statement3."<br>"; 
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
 		 
-		 $count = $db->exec($statement1);
-		 $count = $db->exec($statement2);
+//		 $count = $db->exec($statement1);
+//		 $count = $db->exec($statement2);
                  $count = $db->exec($statement3);
-                 $count = $db->exec($statement4);
+//                 $count = $db->exec($statement4);
                  $count = $db->exec($statement5);
 		 $db= null;
 		 }  catch(PDOException $e)
