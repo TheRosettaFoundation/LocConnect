@@ -104,7 +104,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	$client=strtoupper($_POST['client']);
 	
 	$mt=strtoupper($_POST['MT']);
-	$ratings=strtoupper($_POST['Ratings']);
+	$sourceValidation=strtoupper($_POST['SourceValidation']);
 	
 
    // Check if the filetype is allowed, if not DIE and inform the user.
@@ -227,7 +227,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
                 $ref2->setAttribute("qrequirement", $quality);
                 $ref2->setAttribute("use-mt", $mt);
                 $ref2->setAttribute("client", $client);
-                $ref2->setAttribute("use-rating", $ratings);
+                $ref2->setAttribute("lkr", $sourceValidation);
                 $ref2->setAttribute("lmc", $lmc);
                 $ref1->appendChild($ref2);
                 $ref->appendChild($ref1);

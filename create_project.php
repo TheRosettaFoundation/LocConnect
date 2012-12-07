@@ -103,7 +103,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	$budget=$_POST['budget'];
 	$quality=strtoupper($_POST['Quality']);
 	$mt=strtoupper($_POST['MT']);
-	$ratings=strtoupper($_POST['Ratings']);
+	$sourceValidation=strtoupper($_POST['SourceValidation']);
 	$company_name=$_POST['company_name'];
 	$contact_name=$_POST['contact_name'];
 	$contact_email=$_POST['contact_email'];
@@ -254,7 +254,7 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 			$metadata->setAttribute("budget", $budget);
 			$metadata->setAttribute("qrequirement", $quality);
 			$metadata->setAttribute("use-mt", $mt);
-			$metadata->setAttribute("use-rating", $ratings);
+			$metadata->setAttribute("lkr", $sourceValidation);
    			$metadata->setAttribute("lmc", $lmc);
 		}
 
@@ -462,7 +462,7 @@ if($content!=""){
 			$metadata->setAttribute("budget", $budget);
 			$metadata->setAttribute("qrequirement", $quality);
 			$metadata->setAttribute("use-mt", $mt);
-			$metadata->setAttribute("use-rating", $ratings);
+			$metadata->setAttribute("lkr", $sourceValidation);
    			$metadata->setAttribute("lmc", $lmc);
 		}
 
