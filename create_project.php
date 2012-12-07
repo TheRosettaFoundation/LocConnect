@@ -109,6 +109,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	$contact_email=$_POST['contact_email'];
 	$source_lang=$_POST['source_lang'];
 	$target_lang=$_POST['target_lang'];
+        $client=strtoupper($_POST['client']);
 	
 
 	$company_name=str_replace('\'','\'\'',$company_name);
@@ -256,6 +257,7 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 			$metadata->setAttribute("use-mt", $mt);
 			$metadata->setAttribute("lkr", $sourceValidation);
    			$metadata->setAttribute("lmc", $lmc);
+                        $metadata->setAttribute("client", $client);
 		}
 
 		// add converted data
@@ -464,6 +466,7 @@ if($content!=""){
 			$metadata->setAttribute("use-mt", $mt);
 			$metadata->setAttribute("lkr", $sourceValidation);
    			$metadata->setAttribute("lmc", $lmc);
+                        $metadata->setAttribute("client", $client);
 		}
 
 		// add converted data
