@@ -1,7 +1,7 @@
 <?php
 header ("Content-Type:text/xml");
 /*------------------------------------------------------------------------*
- * © 2010 University of Limerick. All rights reserved. This material may  *
+ * ï¿½ 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
@@ -19,6 +19,13 @@ function sendOutput($id, $com, $data)
   $pattern = '/<\?xml version.*;?>/i';
   $replacement = '';
   $content=preg_replace($pattern, $replacement, $content);
+  $content=trim($content);
+  if(strpos($content, "<content>")==0){
+      $doc = new DOMDocument();
+      $doc->loadXML($content);
+      $xliffRoot = $doc->getElementsByTagName("xliff")->item(0);
+      $content=$doc->saveXML($xliffRoot);
+  }
 
     //open the database
     $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
