@@ -82,8 +82,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	
 	return $res;
 }
-
-        $allowed_filetypes = array('.txt', '.html', '.doc'); // These will be the types of file that will pass the validation.	  
+        $allowed_filetypes = explode(",", ".xml,.csv,.txt,.dita,.ditamap,.c,.h,.cpp,.dtd,.idml,.strings,.properties,.json,.catkeys,.html,.htm,.xslx,.xltx,.pptx,.potx,.docx,.dotx,.mif,.ods,.ots,.odg,.otg,.odp,.otp,.odt,.ott,.pentm,.php,.po,.rkm,.rdf,.resx,.sdlxlf,.lang,.srt,.tsv,.tmx,.txp,.rtf,.ts,.ttx,.txml,.vrsz,.wix,.xlf,.xliff,.yml,.yaml"); // These will be the types of file that will pass the validation.	  
         $allowed_filetypes1 = array('.lmc',''); // These will be the types of file that will pass the validation.	  
         $max_filesize = 524288; // Maximum filesize in BYTES (currently 0.5MB).
         $upload_path = BASE_UPLOAD_PATH; // The place the files will be uploaded to
@@ -104,12 +103,13 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	$quality=strtoupper($_POST['Quality']);
 	$mt=strtoupper($_POST['MT']);
 	$ratings=strtoupper($_POST['Ratings']);
-	$company_name=$_POST['company_name'];
+	$ITS_validation=strtoupper($_POST['its_validation']);
+        $company_name=$_POST['company_name'];
 	$contact_name=$_POST['contact_name'];
 	$contact_email=$_POST['contact_email'];
 	$source_lang=$_POST['source_lang'];
 	$target_lang=$_POST['target_lang'];
-	
+        	
 
 	$company_name=str_replace('\'','\'\'',$company_name);
 	$company_name=str_replace('"','""',$company_name);
@@ -255,6 +255,7 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 			$metadata->setAttribute("qrequirement", $quality);
 			$metadata->setAttribute("use-mt", $mt);
 			$metadata->setAttribute("use-rating", $ratings);
+                        $metadata->setAttribute("its-validation", $ITS_validation);
    			$metadata->setAttribute("lmc", $lmc);
 		}
 
@@ -460,6 +461,7 @@ if($content!=""){
 			$metadata->setAttribute("qrequirement", $quality);
 			$metadata->setAttribute("use-mt", $mt);
 			$metadata->setAttribute("use-rating", $ratings);
+                        $metadata->setAttribute("its-validation", $ITS_validation);
    			$metadata->setAttribute("lmc", $lmc);
 		}
 
@@ -468,6 +470,7 @@ if($content!=""){
 		foreach( $converted_filedata as $fdata)
 		{
 			$fdata->appendChild($xliff->createTextNode($content));
+                        
 		}
 
 

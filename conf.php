@@ -80,6 +80,7 @@ define('BASE_PMUI_PBUDG', 'Budget(€)');
 define('BASE_PMUI_PQAUL', 'Quality Requirements');
 define('BASE_PMUI_PMT', 'Use MT');
 define('BASE_PMUI_PRT', 'Use Ratings');
+define('BASE_PMUI_ITS', 'ITS Validation');
 define('BASE_PMUI_PCNAME', 'Company Name');
 define('BASE_PMUI_PCTNAME', 'Contact Name');
 define('BASE_PMUI_PCTEMAIL', 'Contact email');
@@ -104,6 +105,7 @@ define('BASE_T_WORKFLOW', 'Workflow');
 define('BASE_T_LOADING', 'Loading');
 $arr = array(
  "DDC" => "Data Domain Classifier",
+ "ITS" => "ITS Validator",
  "EXT" => "Extractor",
  "MGR" => "Merger",
  "LKR" => "Localisation Knowledge Repository",

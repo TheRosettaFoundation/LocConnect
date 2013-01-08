@@ -22,6 +22,10 @@ function getJob($id, $com)
 	$count = $db->exec('Update Demo set PickDate=datetime("now") where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
 	$data= stripcslashes($result->fetchColumn());
 	$fileData="<content>".$data."</content>";
+        
+//        if(strncmp($fileData, "<content>", sizeof("<content>"))==0){
+//            $fileData= substr($fileData, 31,  sizeof($fileData)-10);
+//        }
     // close the database connection
     $db = NULL;
   }

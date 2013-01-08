@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <?php
 /*------------------------------------------------------------------------*
- * © 2010 University of Limerick. All rights reserved. This material may  *
+ * ï¿½ 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
@@ -104,6 +104,10 @@ $("#datepicker1").datepicker();
 <tr>
 <td style="width: 202px;"><?php print  BASE_PMUI_PRT;?></td>
 <td style="width: 202px;"><input name="Ratings" value="Yes" type="radio" checked />Yes<input name="Ratings" value="No" type="radio" /> No</td>
+</tr>
+<tr>
+<td style="width: 202px;"><?php print  BASE_PMUI_ITS;?></td>
+<td style="width: 315px;"><input name="its_validation" value="Yes" type="radio" checked />Yes <input name="its_validation" value="No" type="radio" />No</td>
 </tr>
 <tr>
 <td style="width: 202px;"></td>
