@@ -102,15 +102,15 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	$budget=$_POST['budget'];
 	$quality=strtoupper($_POST['Quality']);
 	$mt=strtoupper($_POST['MT']);
-	$ratings=strtoupper($_POST['Ratings']);
-	$ITS_validation=strtoupper($_POST['its_validation']);
         $company_name=$_POST['company_name'];
+	$ITS_validation=strtoupper($_POST['its_validation']);
+	$sourceValidation=strtoupper($_POST['SourceValidation']);
 	$contact_name=$_POST['contact_name'];
 	$contact_email=$_POST['contact_email'];
 	$source_lang=$_POST['source_lang'];
 	$target_lang=$_POST['target_lang'];
-        	
-
+        $client=strtoupper($_POST['client']);
+        
 	$company_name=str_replace('\'','\'\'',$company_name);
 	$company_name=str_replace('"','""',$company_name);
 	
@@ -254,9 +254,10 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 			$metadata->setAttribute("budget", $budget);
 			$metadata->setAttribute("qrequirement", $quality);
 			$metadata->setAttribute("use-mt", $mt);
-			$metadata->setAttribute("use-rating", $ratings);
                         $metadata->setAttribute("its-validation", $ITS_validation);
+			$metadata->setAttribute("lkr", $sourceValidation);
    			$metadata->setAttribute("lmc", $lmc);
+                        $metadata->setAttribute("client", $client);
 		}
 
 		// add converted data
@@ -308,10 +309,12 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 		 /* XML processing end */
 		 
 		 // workflow recommender, lol
-		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
-		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
-		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','waiting',3)";
-                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','waiting',4)";
+
+//		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
+//		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
+		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','pending',1)";
+//                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
+
                  
 		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
 		 ///echo $statement1."<br>"; 
@@ -319,14 +322,15 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
-                 $count = $db->exec($statement1);
-                 if($count==FALSE) die("<p>SQL query: <p>".$statement1."  ... failed");
-		 $count = $db->exec($statement2);
-                 if($count==FALSE) die("<p>SQL query: <p>".$statement2."  ... failed");
+//                 $count = $db->exec($statement1);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement1."  ... failed");
+//		 $count = $db->exec($statement2);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement2."  ... failed");
 		 $count = $db->exec($statement3);
                  if($count==FALSE) die("<p>SQL query: <p>".$statement3."  ... failed");
-		 $count = $db->exec($statement4);
-                 if($count==FALSE) die("<p>SQL query: <p>".$statement4."  ... failed");
+//		 $count = $db->exec($statement4);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement4."  ... failed");
+
                  $count = $db->exec($statement5);
                  if($count==FALSE) die("<p>SQL query: <p>".$statement5."  ... failed");
 		 $db= null;
@@ -460,9 +464,10 @@ if($content!=""){
 			$metadata->setAttribute("budget", $budget);
 			$metadata->setAttribute("qrequirement", $quality);
 			$metadata->setAttribute("use-mt", $mt);
-			$metadata->setAttribute("use-rating", $ratings);
                         $metadata->setAttribute("its-validation", $ITS_validation);
+			$metadata->setAttribute("lkr", $sourceValidation);
    			$metadata->setAttribute("lmc", $lmc);
+                        $metadata->setAttribute("client", $client);
 		}
 
 		// add converted data
@@ -515,23 +520,24 @@ if($content!=""){
 		 /* XML processing end */
 		 
 		 
-		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
-		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
-		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','waiting',3)";
-                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','waiting',4)";
+
+//		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
+//		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
+		 $statement3="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','pending',1)";
+//                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
 		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
 		 //echo $statement3."<br>"; 
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
-                 $count = $db->exec($statement1);
-                 if($count==FALSE) die("<p>SQL query: <p>".$statement1."  ... failed");
-		 $count = $db->exec($statement2);
-                 if($count==FALSE) die("<p>SQL query: <p>".$statement2."  ... failed");
+//                 $count = $db->exec($statement1);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement1."  ... failed");
+//		 $count = $db->exec($statement2);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement2."  ... failed");
 		 $count = $db->exec($statement3);
                  if($count==FALSE) die("<p>SQL query: <p>".$statement3."  ... failed");
-		 $count = $db->exec($statement4);
-                 if($count==FALSE) die("<p>SQL query: <p>".$statement4."  ... failed");
+//		 $count = $db->exec($statement4);
+//                 if($count==FALSE) die("<p>SQL query: <p>".$statement4."  ... failed");
                  $count = $db->exec($statement5);
                  if($count==FALSE) die("<p>SQL query: <p>".$statement5."  ... failed");
 		 $db= null;

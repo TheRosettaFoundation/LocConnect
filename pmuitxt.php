@@ -98,12 +98,18 @@ $("#datepicker1").datepicker();
 </td>
 </tr>
 <tr>
+<td style="width: 202px;"><?php print  BASE_PMUI_CLIENT;?></td>
+<td style="width: 315px;">
+<select name="client"><option selected="selected" value="Symantec">Symantec</option><option>Other</option></select>
+</td>
+</tr>
+<tr>
 <td style="width: 202px;"><?php print  BASE_PMUI_PMT;?></td>
 <td style="width: 315px;"><input name="MT" value="Yes" type="radio" checked />Yes <input name="MT" value="No" type="radio" />No</td>
 </tr>
 <tr>
 <td style="width: 202px;"><?php print  BASE_PMUI_PRT;?></td>
-<td style="width: 202px;"><input name="Ratings" value="Yes" type="radio" checked />Yes<input name="Ratings" value="No" type="radio" /> No</td>
+<td style="width: 202px;"><input name="SourceValidation" value="Yes" type="radio" checked />Yes<input name="SourceValidation" value="No" type="radio" /> No</td>
 </tr>
 <tr>
 <td style="width: 202px;"><?php print  BASE_PMUI_ITS;?></td>

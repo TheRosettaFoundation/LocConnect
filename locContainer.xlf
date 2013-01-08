@@ -3,7 +3,6 @@
     <header>
 	 <phase-group>
 	   	<phase phase-name='Project Kick-off' process-name='Enter project metadata' company-name='LRC' tool-id='PMUI'/>
-		<phase phase-name='Quality Assurance' process-name='authoring' tool-id='LKR'/>
 	   </phase-group>
 	  <reference>
         <internal-file form='text'>
@@ -17,7 +16,6 @@
        </reference>
 	   <tool tool-name='Project Management User Interface - locConnect' tool-id='PMUI' tool-version='1'/>
     </header>
-	<body>
-	</body>
+	<body/>
   </file>
 </xliff>
