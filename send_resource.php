@@ -2,7 +2,7 @@
 header ("Content-Type:text/xml");
 require_once('./conf.php');
 /*------------------------------------------------------------------------*
- * © 2010 University of Limerick. All rights reserved. This material may  *
+ * ï¿½ 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ function genID()
 	return $newID;		
 }
 
-function sendResource($nid, $type, $desc, $data, $metadata)
+function sendResource($nid, $type, $desc, $data, $metadata, $filename)
 {
  $error_occured=0;
  $response='';
@@ -52,7 +52,7 @@ function sendResource($nid, $type, $desc, $data, $metadata)
 	
 	if ($dbid=='')  // there is no resource found in the database with given id. so we need to insert data.
 	{
-		$statement="INSERT INTO Resources(ResourceID, Type, Description, File) VALUES ('".$id."', '".strtoupper($type)."','".$desc."','".$data."')";
+		$statement="INSERT INTO Resources(ResourceID, Type, Description, File, Filename) VALUES ('".$id."', '".strtoupper($type)."','".$desc."','".$data."','".$filename."')";
 		
 		$count = $db->exec($statement);
 		//print $statement."<br/>";
@@ -112,7 +112,9 @@ $id=$_POST["id"];
 $type=$_POST["type"];
 $desc=$_POST["desc"];
 $metadata=$_POST["metadata"];
-$content=$_POST["data"];  
+$content=$_POST["data"]; 
+$filename=$_POST["filename"];
+
 $data=prepDB($content);
 
 //print $data;
@@ -134,7 +136,7 @@ print "<error><msg>data not found in the request</msg></error>";
 	 if ($type=="")
 	 {
 	  print "<error><msg>resource type not found in the request</msg></error>";
-	 } else echo sendResource($id, $type, $desc, $data, $metadata);
+	 } else echo sendResource($id, $type, $desc, $data, $metadata, $filename);
 	}
 }
 //print $data;

@@ -6,21 +6,22 @@ header ("Content-Type:text/xml; charset=utf-8");
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
 require_once('./conf.php');
-function getResource($id, $type)
+function getResourceFilename($id,$type)
 {
   $fileData='';
   try
   {
     //open the database
     $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
-        if(is_null($type)){
-            $result = $db->query("SELECT File FROM Resources where ResourceID='$id'");
+     if(is_null($type)){
+            $result = $db->query("SELECT Filename FROM Resources where ResourceID='$id'");
         }else{
-            $result = $db->query("SELECT File FROM Resources where ResourceID='$id' and Type='$type'");
+            $result = $db->query("SELECT Filename FROM Resources where ResourceID='$id' and Type='$type'");
         }
-            
-	$data= stripslashes($result->fetchColumn());
-	$fileData="<content>".base64_decode($data)."</content>";
+	
+	$result = $result->fetchColumn();
+//        echo $result;
+	$fileData = $result;
     // close the database connection
     $db = NULL;
   }
@@ -29,11 +30,11 @@ function getResource($id, $type)
     //print 'Exception : '.$e->getMessage();
 	$fileData="<error><msg>".$e->getMessage()."</msg></error>";
   }
-  if (trim($fileData)=='<content></content>') $fileData="<error><msg>There is no resource corresponding to Resource ID:".$id."</msg></error>";
   return $fileData;
 }
 $id=$_GET["id"];
 $type=null;
 if(isset ($_GET["type"])) $type=$_GET["type"];
-echo getResource($id,$type);
+echo getResourceFilename($id, $type);
+
 ;?>

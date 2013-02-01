@@ -20,12 +20,12 @@ function sendOutput($id, $com, $data)
   $replacement = '';
   $content=preg_replace($pattern, $replacement, $content);
   $content=trim($content);
-  if(strpos($content, "<content>")==0){
-      $doc = new DOMDocument();
-      $doc->loadXML($content);
-      $xliffRoot = $doc->getElementsByTagName("xliff")->item(0);
-      $content=$doc->saveXML($xliffRoot);
-  }
+//  if(strpos($content, "<content>")==0){
+//      $doc = new DOMDocument();
+//      $doc->loadXML($content);
+//      $xliffRoot = $doc->getElementsByTagName("xliff")->item(0);
+//      $content=$doc->saveXML($xliffRoot);
+//  }
 
     //open the database
     $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');

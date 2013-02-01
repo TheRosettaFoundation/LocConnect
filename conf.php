@@ -86,6 +86,7 @@ define('BASE_PMUI_PCTNAME', 'Contact Name');
 define('BASE_PMUI_PCTEMAIL', 'Contact email');
 define('BASE_PMUI_PLMC', 'LMC file');
 define('BASE_PMUI_PSRCF', 'Source text file');
+define('BASE_PMUI_LRF', 'Linked rules files');
 define('BASE_PMUI_PSRCT', 'Source text <br/> (if file is not selected)');
 define('BASE_PMUI_CLIENT', 'Client');
 

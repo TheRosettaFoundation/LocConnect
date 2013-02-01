@@ -144,6 +144,10 @@ $("#datepicker1").datepicker();
 <td><input name="source_text_file" type="file" /></td>
 </tr>
 <tr>
+<td><?php print  BASE_PMUI_LRF;?></td>
+<td><input name="linked_rules_file" type="file" /></td>
+</tr>    
+<tr>
 <td><?php print  BASE_PMUI_PSRCT;?></td>
 <td><textarea cols="40" rows="7" name="raw_text"></textarea></td>
 </tr>

@@ -56,7 +56,7 @@ $("#datepicker1").datepicker();
 
 <?php
 require_once 'HTTP/Request2.php';
-function sendResource($id, $type, $metdata, $desc, $content)
+function sendResource($id, $type, $metdata, $desc, $content, $filename=null)
 {
     $res="";
 	$request = new HTTP_Request2("http://".$_SERVER['HTTP_HOST'].BASE_URL."/send_resource.php");
@@ -66,7 +66,8 @@ function sendResource($id, $type, $metdata, $desc, $content)
 		->addPostParameter('type', $type)
 		->addPostParameter('data', $content)
 		->addPostParameter('metadata', $metdata)
-		->addPostParameter('desc', $desc);
+		->addPostParameter('desc', $desc)
+                ->addPostParameter('filename', $filename);
 			
 	try {
 		$response = $request->send();
@@ -88,6 +89,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
         $upload_path = BASE_UPLOAD_PATH; // The place the files will be uploaded to
         $filename = $_FILES["source_text_file"]["name"]; // Get the name of the file (including file extension).
 	$filename1 = $_FILES["lmc_file"]["name"]; // Get the name of the file (including file extension).
+        $linkedRulesFile = $_FILES["linked_rules_file"]["name"];
         
 	$ext = substr($filename, strrpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
 	$ext1 = substr($filename1, strrpos($filename1,'.'), strlen($filename1)-1); // Get the extension from the filename.
@@ -195,7 +197,7 @@ $lmc="NO";
 if ($tmpName1)
 {
 		 if(move_uploaded_file($tmpName1,$upload_path . $filename1)){
-		 $resID=sendResource($project_ID, 'lmc', 'domain:test', 'Test file', $content1);
+		 $resID=sendResource($project_ID, 'lmc', 'domain:test', 'Test file', base64_encode($content1));
 		 $is_resource_attached=1;
          $resID=str_replace('<resource><msg>','',$resID);
 		 $resID=str_replace('</msg></resource>','',$resID);
@@ -215,7 +217,26 @@ if ($tmpName1)
 		}
       else
          echo BASE_CP_UPLOADERR_RES; // It failed :(.
-}	
+}
+
+if(isset($_FILES['linked_rules_file'])&&isset($_FILES['linked_rules_file']['tmp_name']) && $_FILES['linked_rules_file']['tmp_name'] != null){
+    $rules = file_get_contents($_FILES['linked_rules_file']['tmp_name']);
+    $rulesFilename = $_FILES["linked_rules_file"]["name"];
+    $resID=sendResource($project_ID, 'its', 'domain:test', 'Test file', base64_encode($rules), $rulesFilename);
+    echo "-----------------".$rulesFilename;
+    $resID=str_replace('<resource><msg>','',$resID);
+    $resID=trim(str_replace('</msg></resource>','',$resID));
+    $is_resource_attached=1;
+    $headers = $xliff->getElementsByTagName( 'header' );
+    foreach( $headers as $header )
+    {
+            $ref=$xliff->createElement('reference');
+            $ref1=$xliff->createElement('external-file');
+            $ref1->setAttribute("href","http://".$_SERVER['SERVER_ADDR'].BASE_URL."/get_resource.php?id=".$resID);
+            $ref->appendChild($ref1);
+            $header->appendChild($ref);
+    }
+}
 
    
 if(move_uploaded_file($tmpName,$upload_path . $filename)){
