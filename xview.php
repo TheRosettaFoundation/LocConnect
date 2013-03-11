@@ -154,6 +154,8 @@ error_reporting(E_ALL);
     $mParser->printMetaData();
     $mParser->printTranslationInfo();
     print "<br />";
+    $mParser->printGlossary();
+    print "<br />";
     $mParser->printLegend();
 
 ;?>
