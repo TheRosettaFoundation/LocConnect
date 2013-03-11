@@ -18,74 +18,59 @@ class XliffParser
         }
         print '<div id="translate">';
         print '<table class="trans" border="0" cellpadding="3" cellspacing="0" align="center"><tbody>';
+        $translate = true;      // default value
+        $foundTransAtt = false;
+        $foundRef = false;
+        $node = $this->domDoc->getElementsByTagName("body")->item(0);
+        while (strcasecmp($node->nodeName, "xliff") != 0) {
+            if (!$foundTransAtt) {
+                $transAtt = $node->getAttribute('translate');
+                if($transAtt !== NULL) {
+                    if($transAtt == 'no') {
+                        $translate = false;
+                    }
+                    $foundTransAtt = true;
+                }
+            }
+            $annotatorsRef = $node->getAttribute("annotatorsRef");
+            if ($annotatorsRef == NULL) {
+                $annotatorsRef = $node->getAttribute("its:annotatorsRef");
+            }
+            if ($annotatorsRef != NULL) {
+                if (!$foundRef) {
+                    $foundRef = true;
+                    print '<tr><td>Annotators References: </td></tr>';
+                }
+                $category = substr($annotatorsRef, 0, strpos($annotatorsRef, "|"));
+                $ref = substr($annotatorsRef, strpos($annotatorsRef, "|") + 1, strlen($annotatorsRef) - 1);
+                print "<tr><td>$category</td><td><a href='$ref' target='_blank'>$ref</a></td></tr>";
+            }
+            $node = $node->parentNode;
+        }
         $nodes = $this->domDoc->getElementsByTagName("trans-unit");
+
         //print '<tr class="header"><td colspan="2" rowspan="1">XLIFF Count Group Metadata</td></tr>';
         foreach ($nodes as $node)
         {
             $name =$node->getAttribute("id");
+            $translateSeg = $translate;
+            $transAtt = $node->getAttribute("translate");
+            if ($transAtt !== NULL) {
+                if ($transAtt == 'no') {
+                    $translateSeg = false;
+                } else {
+                    $translateSeg = true;
+                }
+            }
             if ($node->hasChildNodes())
             {
-                //Check if the current segment is supposed to be translated
-                $tag = $node;
-                $foundTransAtt = false;
-                $translateSeg = true;
-                while(strcasecmp($tag->nodeName, "file") != 0 && !($foundTransAtt)) {
-                    $translate = $tag->getAttribute('translate');
-                    if($translate !== NULL) {
-                        if($translate == 'no') {
-                            $translateSeg = false;
-                        }
-                        $foundTransAtt = true;
-                        $tag = $tag->parentNode;
-                    }
-                }
-                        
-                $sourceNode=$node->getElementsByTagName("source");
-                $reference_list = array();  //assiciative array of text => reference
-                $comment_list = array();    //associative array of text => comment
-                if ($sourceNode->length>0) $source=$sourceNode->item(0)->nodeValue ;else $source=BASE_XLFV_SRCERR;
+                $sourceNode=$node->getElementsByTagName("source")->item(0);
+                $source = $this->parseElement($sourceNode);
                 if (trim($source)=="") {
                     $source=BASE_XLFV_SRCERR;
-                } else {
-                    $node = $sourceNode->item(0);
-                    $source = "";
-                    if($node->hasChildNodes()) {
-                        $child = $node->firstChild;
-                        while($child != NULL) {
-                            if(strcasecmp($child->nodeName, "mrk") == 0) {
-                                $mtype = $child->getAttribute("mtype");
-                                if($mtype != NULL) {
-                                    if(strcasecmp($mtype, "phrase") == 0) {
-                                        $source .= " ".$child->nodeValue;
-                                        $text = $child->nodeValue;
-                                        $ref = $child->getAttribute("url");
-                                        if($ref == NULL) {
-                                            $ref = $child->getAttribute("disambigIdentRef");
-                                        }
-                                        if($ref != NULL) {
-                                            $source .= "<sup><a target='_blank' href='$ref'>[ref]</a></sup>";
-                                            $comment = $child->getAttribute('comment');
-                                            if($comment != NULL) {
-                                                $comment_list[$text] = $comment;
-                                            }
-                                            $reference_list[$text] = $ref;
-                                        }
-                                    } else if(strcasecmp($mtype, "x-DNT") == 0 || strcasecmp($mtype, "preserve") == 0) {
-                                        $source .= " <span class='no-translate'>";
-                                        $source .= $child->nodeValue;
-                                        $source .= "</span>";
-                                    }
-                                }
-                            } else {
-                                $source .= " ".$child->nodeValue;
-                            } 
-                            $child = $child->nextSibling;
-                        }
-                    }
                 }
             }
             $targetNode=$node->getElementsByTagName("target");
-            //print $node->hasElement("target");
             if ($targetNode->length>0) $target=$targetNode->item(0)->nodeValue; else $target=BASE_XLFV_TGTERR;
             if (trim($target)=="") $target=BASE_XLFV_TGTERR;
             $altTrans=$node->getElementsByTagName("alt-trans");
@@ -148,27 +133,79 @@ class XliffParser
             } else {
                 print '<tr class="row-no-click"><td colspan="4" rowspan="1" class="alt"> <em>'.BASE_XLFV_ALTERR.'</em> </td></tr>';
             }
-
-            if(count($reference_list) > 0) {
-                print "<tr class='row-no-click'>";
-                print "<td colspan='4'>";
-                print "<h3>References</h3>";
-                print "<ul>";
-                foreach($reference_list as $key => $reference) {
-                    print "<li>";
-                    print "<a target='_blank' href=$reference>$key</a>";
-                    if(isset($comment_list[$key])) {
-                        print " - ".$comment_list[$key];
-                    }
-                    print "</li>";
-                }
-                print "</ul>";
-                print "</td>";
-                print "</tr>";
-            }
         }
         print '</tbody></table>';
         print '<center><p class="txt"><a id="closet" href="#"> <em> '.BASE_XLFV_HIDET.' </em> </a></p></center></div>' ;
+    }
+
+    private function parseElement($node)
+    {
+        $source_parsed = "";
+        if (get_class($node) == "DOMText") {
+            $source_parsed = $node->nodeValue;
+        } else {
+            $closingTag = "";
+            if(strcasecmp($node->nodeName, "mrk") == 0) {
+                $mtype = $node->getAttribute("mtype");
+                if(strcasecmp($mtype, "phrase") == 0) {
+                    $source_parsed .= " ".$node->nodeValue;
+                    $ref = $node->getAttribute("url");
+                    if($ref == NULL) {
+                        $ref = $node->getAttribute("disambigIdentRef");
+                    }
+                    if($ref == NULL) {
+                        $ref = $node->getAttribute("comment");
+                    }
+                    if($ref != NULL) {
+                        $source_parsed .= "<sup><a target='_blank' href='$ref'>[ref]</a></sup>";
+                    }
+                } elseif(strcasecmp($mtype, "x-DNT") == 0 || strcasecmp($mtype, "preserve") == 0
+                               || strcasecmp($mtype, "protected") == 0) {
+                    $source_parsed .= " <span class='no-translate'>";
+                    $closingTag .= "</span>";
+                } elseif(strcasecmp($mtype, "x-its-Translate-Yes") == 0) {
+                    $source_parsed .= " <span class='translate'>";
+                    $closingTag .= "</span>";
+                } elseif(strcasecmp($mtype, "term") == 0 || $node->getAttribute("its:terminology") == "yes") {
+                    $confidence = $node->getAttribute("its:termConfidence");
+                    if ($confidence == "") {
+                        $confidence = $node->getAttribute("its:termConfidence");
+                    }    
+                    $ref = $node->getAttribute("its:termInfoRef");
+                    if ($ref == "") {
+                        $ref = $node->getAttribute("termInfoRef");
+                    }
+                    $source_parsed .= "<span class='term' title='Confidence: $confidence'>";
+                    $closingTag .= "</span><sup><a href='$ref'>[$ref]</a></sup>";
+                } elseif(strcasecmp($mtype, "x-its") || strcasecmp($mtype, "xits")) {
+                    $comment = $node->getAttribute("comment");
+                    if ($comment != "") {
+                        $source_parsed .= " <span class=\"comment\" title=\"$comment\">";
+                        $closingTag .= "</span>";
+                    }
+                }
+            }
+            $annotatorsRef = $node->getAttribute("annotatorsRef");
+            if ($annotatorsRef == NULL) {
+                $annotatorsRef = $node->getAttribute("its:annotatorsRef");
+            }
+            if ($annotatorsRef != NULL) {
+                $category = substr($annotatorsRef, 0, strpos($annotatorsRef, "|"));
+                $ref = substr($annotatorsRef, strpos($annotatorsRef, "|") + 1, strlen($annotatorsRef) - 1);
+                $source_parsed .= "<a href='$ref' title='$category' target='_blank'>";
+                $closingTag .= "</a>";
+            }
+            if($node->hasChildNodes()) {
+                $child = $node->firstChild;
+                while($child != NULL) {
+                    $source_parsed .= $this->parseElement($child);
+                    $child = $child->nextSibling;
+                }
+            }
+            $source_parsed .= $closingTag;
+        }
+
+        return $source_parsed;
     }
 
     function printMetaData()
@@ -240,6 +277,41 @@ class XliffParser
         
     }
 
+    public function printGlossary()
+    {
+        $glossaries = $this->domDoc->getElementsByTagName("glossary-entry");
+        if (count($glossaries) > 0) {
+            echo "<center><h3>Glossary</h3></center>";
+            echo "<table class='trans' border=\"1\" cellpadding=\"3\" cellspacing=\"0\" align='center'>";
+            echo "<tr class='header'><th>ID</th><th>Term</th><th>Translation</th></tr>";
+            foreach ($glossaries as $glossary) {
+                $ref = $glossary->getAttribute("id");
+                if ($glossary->hasChildNodes()) {
+                    $term = "";
+                    $translation = "";
+                    $node = $glossary->firstChild;
+                    while ($node != NULL) {
+                        if ($node->nodeName == "itsx:term" || $node->nodeName == "term") {
+                            $term = $node->textContent;
+                        }
+                        if ($node->nodeName == "itsx:translation" || $node->nodeName == "translation") {
+                            $translation = $node->textContent;
+                        }
+                        $node = $node->nextSibling;
+                    }
+                    if ($ref != "" && $translation != "" && $term != "") {
+                        echo "<tr>";
+                        echo "<td><a name='$ref'>$ref</td>";
+                        echo "<td>$term</td>";
+                        echo "<td>$translation</td>";
+                        echo "</tr>";
+                    }
+                }
+            }
+            echo "</table>";
+        }
+    }
+
     function printDownloadInfo()
     {
         $id = $_GET['id'];
@@ -268,6 +340,8 @@ class XliffParser
         print '<table class="trans" border="0" cellpadding="3" cellspacing="0" align="center"><tbody>';
             print "<tr class='header'><td>Format</td><td>Meaning</td></tr>";
             print "<tr><td class='no-translate'>Sample</td><td>Text marked as \"Do Not Translate\"</td></tr>";
+            print "<tr><td class='comment'>Comment</td><td>Hover over this text for a comment</td></tr>";
+            print "<tr><td class='term'>Term</td><td>Text marked as a term. Hover over for confidence.</td></tr>";
         print "</table>";
     }
 }

@@ -35,6 +35,17 @@ h1, h2, h3, h4, h5, h6, p, form {
     background-color: rgb(232, 244, 255);
 }
 
+.comment {
+    border-bottom-style: dashed;
+    border-bottom-color: rgb(255, 255, 0);
+    border-bottom-width: 1px;
+    background-color: rgb(255, 255, 150);
+}
+
+.term {
+    background-color: rgb(100, 255, 100);
+}
+
 #wrapper {
 	width:800px;
 	margin:0px auto;
