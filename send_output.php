@@ -13,7 +13,6 @@ function sendOutput($id, $com, $data)
   try
   {
   
-  echo " <br>content before str-replace $data<br>";    
   $content=$data; 
   $content=str_replace('\'','\'\'',$content);
   $content=str_replace('\"','\"\"',$content);
@@ -55,7 +54,6 @@ function sendOutput($id, $com, $data)
 $id=$_POST["id"];
 $com=$_POST["com"];
 $data=$_POST["data"];
-echo " data before strip slashes = $data";
 $data=stripslashes($_POST["data"]);
 //$data= sqlite_escape_string($data);
 

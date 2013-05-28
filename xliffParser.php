@@ -71,7 +71,14 @@ class XliffParser
                 }
             }
             $targetNode=$node->getElementsByTagName("target");
-            if ($targetNode->length>0) $target=$targetNode->item(0)->nodeValue; else $target=BASE_XLFV_TGTERR;
+            //if ($targetNode->length>0) $target=$targetNode->item(0)->nodeValue; else $target=BASE_XLFV_TGTERR;
+            if ($targetNode->item(0) && $targetNode->item(0)->parentNode && 
+                    $targetNode->item(0)->parentNode->nodeName == "alt-trans") {
+                $target=BASE_XLFV_TGTERR;
+            } else {
+                if ($targetNode->length>0) $target=$targetNode->item(0)->nodeValue; else $target=BASE_XLFV_TGTERR;
+            }
+
             if (trim($target)=="") $target=BASE_XLFV_TGTERR;
             $altTrans=$node->getElementsByTagName("alt-trans");
             print '<tr class="header"><td colspan="4" rowspan="1">'.$name.'</td></tr>';
@@ -103,6 +110,9 @@ class XliffParser
                      
             if ($altTrans->length>0)
             {
+                if ($altTrans->item(0)->parentNode->getElementsByTagName("target")->length > 0) {
+                    $altTrans = $altTrans->item(0)->parentNode->getElementsByTagName("target");
+                }
                 $k=0;
                 foreach ($altTrans as $alt)
                 {

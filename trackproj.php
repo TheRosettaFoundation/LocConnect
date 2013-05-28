@@ -20,7 +20,6 @@ $(document).ready(function() {
  	 $("#active").load("active.php");
 	 $("#completed").load("completed.php");
 	 $("#latest").load("latest.php");
-	 
    var refreshId = setInterval(function() {
       $("#active").load("active.php");
 	  $("#completed").load("completed.php");
