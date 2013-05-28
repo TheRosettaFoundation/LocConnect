@@ -64,14 +64,20 @@ class XliffParser
             }
             if ($node->hasChildNodes())
             {
-                $sourceNode=$node->getElementsByTagName("seg-source")->item(0);
-                $source = $this->parseElement($sourceNode);
+                if ($node->getElementsByTagName("seg-source")->length > 0) {
+                    $sourceNode=$node->getElementsByTagName("seg-source")->item(0);
+                    $source = $this->parseElement($sourceNode);
+                } elseif ($node->getElementsByTagName("source")->length > 0) {
+                    $sourceNode=$node->getElementsByTagName("source")->item(0);
+                    $source = $this->parseElement($sourceNode);
+                } else {
+                    $source=BASE_XLFV_SRCERR;
+                }
                 if (trim($source)=="") {
                     $source=BASE_XLFV_SRCERR;
                 }
             }
             $targetNode=$node->getElementsByTagName("target");
-            //if ($targetNode->length>0) $target=$targetNode->item(0)->nodeValue; else $target=BASE_XLFV_TGTERR;
             if ($targetNode->item(0) && $targetNode->item(0)->parentNode && 
                     $targetNode->item(0)->parentNode->nodeName == "alt-trans") {
                 $target=BASE_XLFV_TGTERR;
