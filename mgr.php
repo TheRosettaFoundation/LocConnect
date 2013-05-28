@@ -3,7 +3,7 @@
 <head>
  <?php
  /*------------------------------------------------------------------------*
- * © 2010 University of Limerick. All rights reserved. This material may  *
+ * ï¿½ 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
@@ -83,14 +83,15 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	return $res;
 }
 
-      $allowed_filetypes = array('.txt'); // These will be the types of file that will pass the validation.	  
-	  $allowed_filetypes1 = array('.lmc',''); // These will be the types of file that will pass the validation.	  
-      $max_filesize = 524288; // Maximum filesize in BYTES (currently 0.5MB).
-      $upload_path = BASE_UPLOAD_PATH; // The place the files will be uploaded to
-    $filename = $_FILES["source_text_file"]["name"]; // Get the name of the file (including file extension).
+        $allowed_filetypes = array('.txt', '.html', '.doc'); // These will be the types of file that will pass the validation.	  
+        $allowed_filetypes1 = array('.lmc',''); // These will be the types of file that will pass the validation.	  
+        $max_filesize = 524288; // Maximum filesize in BYTES (currently 0.5MB).
+        $upload_path = BASE_UPLOAD_PATH; // The place the files will be uploaded to
+        $filename = $_FILES["source_text_file"]["name"]; // Get the name of the file (including file extension).
 	$filename1 = $_FILES["lmc_file"]["name"]; // Get the name of the file (including file extension).
-	$ext = substr($filename, strpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
-	$ext1 = substr($filename1, strpos($filename1,'.'), strlen($filename1)-1); // Get the extension from the filename.
+        
+	$ext = substr($filename, strrpos($filename,'.'), strlen($filename)-1); // Get the extension from the filename.
+	$ext1 = substr($filename1, strrpos($filename1,'.'), strlen($filename1)-1); // Get the extension from the filename.
 	
 	
 	$project_name=$_POST['project_name'];
@@ -120,10 +121,10 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	
    // Check if the filetype is allowed, if not DIE and inform the user.
    
-   if ($ext!="") 
-   {
+if ($ext!="") 
+{
    
-   if(!in_array($ext,$allowed_filetypes))
+ if(!in_array($ext,$allowed_filetypes))
       die(BASE_CP_SOURCEERR);
  
    // Now check the filesize, if it is too large then DIE and inform the user.
@@ -218,15 +219,15 @@ if ($tmpName1)
    
 if(move_uploaded_file($tmpName,$upload_path . $filename)){
          print "<h2>".BASE_CP_SUCCESS."</h2>";
-         print BASE_CP_SUCCESS_M1; 
+         echo BASE_CP_SUCCESS_M1; 
 		
 		
 		
-		print BASE_CP_SUCCESS_M2."<strong>".$project_ID."</strong><br/>";
-		print BASE_CP_SUCCESS_M3."<a href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/track.php?id=".$project_ID."'>".BASE_CP_SUCCESS_M4."</a><br>";
+		echo BASE_CP_SUCCESS_M2."<strong>".$project_ID."</strong><br/>";
+		echo BASE_CP_SUCCESS_M3."<a href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/track.php?id=".$project_ID."'>".BASE_CP_SUCCESS_M4."</a><br>";
 		 //echo $content;
 		 if ($is_resource_attached) {
-         print BASE_CP_SUCCESS_M5.$resID; 
+         echo BASE_CP_SUCCESS_M5.$resID; 
  		 print "<br>"; }
 		 
 		 
@@ -304,18 +305,20 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 		 
 		 /* XML processing end */
 		 
-		 
-		 
-		 $statement="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',1)";
-		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '','WFR','waiting',2)";
-		 $statement3="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."')";
+		 // workflow recommender, lol
+		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
+                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',2)";
+                 
+		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
 		//echo $statement."<br>"; 
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
-		 $count = $db->exec($statement);
-		 $count = $db->exec($statement1);
+                 $count = $db->exec($statement1);
+		 $count = $db->exec($statement2);
 		 $count = $db->exec($statement3);
+		 $count = $db->exec($statement4);
+                 $count = $db->exec($statement5);
 		 $db= null;
 		 }  catch(PDOException $e)
 		  {
@@ -324,7 +327,7 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 		 
 		 }// It worked.
       else
-         print BASE_CP_UPLOADERR_SRC; // It failed :(.
+         echo BASE_CP_UPLOADERR_SRC; // It failed :(.
   } else
   
   {
@@ -409,12 +412,14 @@ if ($tmpName1)
 
    
 if($content!=""){
+    
+         $filename = "filename.txt";
          print "<h2>".BASE_CP_SUCCESS."</h2>";
          echo BASE_CP_SUCCESS_M6; 
 		
 		
 		
-		echo BASE_CP_SUCCESS_M2.$project_ID."</strong><br/>";
+		echo BASE_CP_SUCCESS_M2."<strong>".$project_ID."</strong><br/>";
 		echo BASE_CP_SUCCESS_M3."<a href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/track.php?id=".$project_ID."'>".BASE_CP_SUCCESS_M4."</a><br>";
 		 //echo $content;
 		 if ($is_resource_attached) {
@@ -497,17 +502,19 @@ if($content!=""){
 		 /* XML processing end */
 		 
 		 
-		 
-		 $statement="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',1)";
-		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '','WFR','waiting',2)";
-		 $statement3="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."')";
-		//echo $statement."<br>"; 
+		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
+                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',2)";
+		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."', '".$filename."')";
+		 //echo $statement3."<br>"; 
 		 try
 		 {
 		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
-		 $count = $db->exec($statement);
+		 
 		 $count = $db->exec($statement1);
-		 $count = $db->exec($statement3);
+		 $count = $db->exec($statement2);
+                 $count = $db->exec($statement3);
+                 $count = $db->exec($statement4);
+                 $count = $db->exec($statement5);
 		 $db= null;
 		 }  catch(PDOException $e)
 		  {
