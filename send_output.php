@@ -54,8 +54,13 @@ function sendOutput($id, $com, $data)
 $id=$_POST["id"];
 $com=$_POST["com"];
 $data=$_POST["data"];
-$data=stripslashes($_POST["data"]);
-//$data= sqlite_escape_string($data);
+//echo "data before $data";
+
+//$data=addcslashes($_POST["data"], "UTF-8");
+//$data=addslashes($_POST["data"]);
+//
+//echo "data after $data";
+////$data= sqlite_escape_string($data);
 
 //print $data;
 echo sendOutput($id,$com,$data);
