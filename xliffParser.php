@@ -116,21 +116,20 @@ class XliffParser
                      
             if ($altTrans->length>0)
             {
-                if ($altTrans->item(0)->parentNode->getElementsByTagName("target")->length > 0) {
-                    $altTrans = $altTrans->item(0)->parentNode->getElementsByTagName("target");
-                }
                 $k=0;
                 foreach ($altTrans as $alt)
                 {
+                    $altSource = $alt->getElementsByTagName("source")->item(0);
+                    $altTarget = $alt->getElementsByTagName("target")->item(0);
                     $k++;
                     $altval=$alt->nodeValue;
                     if ($k==1) {
-                        print '<tr class="row-no-click"><td colspan="1" rowspan="'.(string)$altTrans->length.'">'.BASE_XLFV_ALT.'</td>'; 
+                        print '<tr class="row-no-click"><td colspan="1" rowspan="'.(string)($altTrans->length * 3).'">'.BASE_XLFV_ALT.'</td>'; 
                     } else {
                         print "<tr class='row-no-click'>";
                     }
                     if ($altval!="") {
-                        print '<td class="alt">'.$altval.'</td>';
+                        print '<td class="alt">Source: '.$altSource->nodeValue.'</td>';
                     } else {
                         print '<td> <em>'.BASE_XLFV_ALTERR.' </em> </td>';
                     }
@@ -144,7 +143,11 @@ class XliffParser
                     }
                     $mq =$alt->getAttribute("match-quality");
                     if ($mq=="" or $mq==NULL) $mq="N/A";
-                    print '<td class="red" id="altb">'.$mq.'</td><td class="txt" id="altb">'.$temp.'</td></tr>';
+                    print '<td class="red" id="altb" rowspan=\'2\'>'.$mq.'</td><td class="txt" id="altb" rowspan=\'2\'>'.$temp.'</td></tr>';
+                    print "<tr class='row-no-click'>";
+                    print "<td class='alt'>Target: ".$altTarget->nodeValue."</td>";
+                    print "</tr>";
+                    print "<tr><td>   </td></tr>";
                 }
             } else {
                 print '<tr class="row-no-click"><td colspan="4" rowspan="1" class="alt"> <em>'.BASE_XLFV_ALTERR.'</em> </td></tr>';
