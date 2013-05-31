@@ -75,23 +75,22 @@ if (strtolower($msg)=='complete')
 			$xml=str_replace('$^$','=\'\'',$output_com_1);
 			$xliff = new DOMDocument();
 			$xliff->loadXML($xml);	
-			$xpath = new DOMXPath($xliff);
-			$xpath->registerNamespace('a', "urn:oasis:names:tc:xliff:document:1.2");
-			$query = '//a:workflow/a:task';
-			$tasks = $xpath->query($query);
-			$c=0;
-			foreach($tasks as $task)
-			{
-				
-				$tool=$task->getAttribute("tool-id");
-				$wforder=(int)$task->getAttribute("order");
-				//if ($step==1) $wforder=$wforder+1; else	$wforder=$wforder+2;
-				$wforder=$wforder+1;
-				$statement="INSERT INTO Demo(Job, Com, Status, WOrder) VALUES ('".$id."', '".$tool."','waiting','".(string)$wforder."')";
-				//$st2=$st2."<tool>".$statement."</tool>";
-				$count = $db->exec($statement);
-				if ($wforder>$c) $c=$wforder;
-			}
+            $workflow = $xliff->getElementsByTagName("workflow")->item(0);
+            $tasks = $workflow->getElementsByTagName("task");
+            $c = 0;
+            if ($tasks->length > 0) {
+    			foreach($tasks as $task)
+	    		{
+		    		$tool=$task->getAttribute("tool-id");
+			    	$wforder=(int)$task->getAttribute("order");
+				    //if ($step==1) $wforder=$wforder+1; else	$wforder=$wforder+2;
+    				$wforder=$wforder+1;
+	    			$statement="INSERT INTO Demo(Job, Com, Status, WOrder) VALUES ('".$id."', '".$tool."','waiting','".(string)$wforder."')";
+		    		//$st2=$st2."<tool>".$statement."</tool>";
+			    	$count = $db->exec($statement);
+				    if ($wforder>$c) $c=$wforder;
+			    }
+            }
 			
 			$count = $db->exec('Update Project set MaxSteps='.(string)$c.' where ID="'.$id.'"');
 			$st='SELECT Com FROM Demo where job="'.$id.'" and WOrder='.$nextStep;
