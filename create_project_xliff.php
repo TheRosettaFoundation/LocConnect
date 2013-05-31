@@ -158,6 +158,8 @@ function sendResource($id, $type, $metdata, $desc, $content)
     $xliff = new DOMDocument();
     $xliff->loadXML( $content);	
     
+    $xliffNode = $xliff->getElementsByTagName("xliff")->item(0);
+    $xliffVersion = $xliffNode->getAttribute("version");
 
     $is_resource_attached=0;
     //generate project id;
@@ -177,46 +179,87 @@ function sendResource($id, $type, $metdata, $desc, $content)
     $lmc="NO";
     if ($tmpName1)
     {
-         if(move_uploaded_file($tmpName1,$upload_path . $filename1)){
-             $resID=sendResource($project_ID, 'lmc', 'domain:test', 'Test file', $content1);
-             $is_resource_attached=1;
-             $resID=str_replace('<resource><msg>','',$resID);
-             $resID=str_replace('</msg></resource>','',$resID);
-             $resID=trim($resID);
-             $lmc="YES";
-             $headers = $xliff->getElementsByTagName( 'header' );
-//             if($headers->lenght==0){// creat a header element if it dose not exist
-//                $fileElement = $xliff->getElementsByTagName( 'file' )->item(0);
-//                $header=$xliff->createElement('header');
-//                $fileElement->appendChild($header);
-//                $headers = $xliff->getElementsByTagName( 'header' );
-//             }
-             foreach( $headers as $header )
-             {
-                $ref=$xliff->createElement('reference');
-                $ref1=$xliff->createElement('external-file');
-                $ref1->setAttribute("href","http://".$_SERVER['SERVER_ADDR'].BASE_URL."/get_resource.php?id=".$resID);
-                $ref->appendChild($ref1);
-                $header->appendChild($ref);
-             }
+        if(move_uploaded_file($tmpName1,$upload_path . $filename1)){
+            $resID=sendResource($project_ID, 'lmc', 'domain:test', 'Test file', $content1);
+            $is_resource_attached=1;
+            $resID=str_replace('<resource><msg>','',$resID);
+            $resID=str_replace('</msg></resource>','',$resID);
+            $resID=trim($resID);
+            $lmc="YES";
+
+            if ($xliffVersion == "2.0") {
+                $files = $xliff->getElementsByTagName('file');
+                foreach ($files as $file) {
+                    if ($file->getElementsByTagName("pmui-data")->length > 0) {
+                        $pmuiData = $file->getElementsByTagName("pmui-data")->item(0);
+                    } else {
+                        $pmuiData = $file->createElement('pmui-data');
+                    }
+                    $ref=$xliff->createElement('reference');
+                    $ref1=$xliff->createElement('external-file');
+                    $ref1->setAttribute("href","http://".$_SERVER['SERVER_ADDR'].BASE_URL."/get_resource.php?id=".$resID);
+                    $ref->appendChild($ref1);
+                    $pmuiData->appendChild($ref);
+                    $file->appendChild($pmuiData);
+                }
+            } else {
+                $headers = $xliff->getElementsByTagName( 'header' );
+//            if($headers->lenght==0){// creat a header element if it dose not exist
+//               $fileElement = $xliff->getElementsByTagName( 'file' )->item(0);
+//               $header=$xliff->createElement('header');
+//               $fileElement->appendChild($header);
+//               $headers = $xliff->getElementsByTagName( 'header' );
+//            }
+                foreach( $headers as $header )
+                {
+                    $ref=$xliff->createElement('reference');
+                    $ref1=$xliff->createElement('external-file');
+                    $ref1->setAttribute("href","http://".$_SERVER['SERVER_ADDR'].BASE_URL."/get_resource.php?id=".$resID);
+                    $ref->appendChild($ref1);
+                    $header->appendChild($ref);
+                }
+            }
+        } else {
+            echo BASE_CP_UPLOADERR_RES; // It failed :(.
         }
-        else echo BASE_CP_UPLOADERR_RES; // It failed :(.
     }	
 
    
     if(move_uploaded_file($tmpName,$upload_path . $filename)){ 
      /* XML processing goes here */
-        $headers = $xliff->getElementsByTagName( 'header' );
-        
-        if($headers==null||$headers->length == 0){// creat a header element if it dose not exist
-            $fileElement = $xliff->getElementsByTagName( 'file' )->item(0);
-            $header=$xliff->createElement('header');
-            $fileElement->appendChild($header);
-            $headers = $xliff->getElementsByTagName( 'header' );
-        }
 
-        foreach( $headers as $header )
-        {
+        if ($xliffVersion == "2.0") {
+            $files = $xliff->getElementsByTagName('file');
+            foreach ($files as $file) {
+                if ($file->getElementsByTagName("pmui-data")->length > 0) {
+                    $pmuiData = $file->getElementsByTagName("pmui-data")->item(0);
+                } else {
+                    $pmuiData = $xliff->createElement('pmui-data');
+                }
+                $pmuiData->setAttribute("pname", $project_name);
+                $pmuiData->setAttribute("pdescription", $project_desc);
+                $pmuiData->setAttribute("startdate", $start_date);
+                $pmuiData->setAttribute("deadline", $deadline);
+                $pmuiData->setAttribute("budget", $budget);
+                $pmuiData->setAttribute("qrequirement", $quality);
+                $pmuiData->setAttribute("use-mt", $mt);
+                $pmuiData->setAttribute("client", $client);
+                $pmuiData->setAttribute("lkr", $sourceValidation);
+                $pmuiData->setAttribute("lmc", $lmc);
+                $file->appendChild($pmuiData);
+            }
+        } else {
+            $headers = $xliff->getElementsByTagName( 'header' );
+        
+            if($headers==null||$headers->length == 0){// creat a header element if it dose not exist
+                $fileElement = $xliff->getElementsByTagName( 'file' )->item(0);
+                $header=$xliff->createElement('header');
+                $fileElement->appendChild($header);
+                $headers = $xliff->getElementsByTagName( 'header' );
+            }
+
+            foreach( $headers as $header )
+            {
                 $ref=$xliff->createElement('reference');
                 $ref1=$xliff->createElement('internal-file');
                 $ref2=$xliff->createElement('pmui-data');
@@ -233,6 +276,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
                 $ref1->appendChild($ref2);
                 $ref->appendChild($ref1);
                 $header->appendChild($ref);
+            }
         }
 
         $content=html_entity_decode($xliff->saveXML(),  ENT_QUOTES, 'UTF-8');
