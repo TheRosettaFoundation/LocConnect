@@ -35,6 +35,14 @@ h1, h2, h3, h4, h5, h6, p, form {
     background-color: rgb(232, 244, 255);
 }
 
+.translate {
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: #FFD7A4;
+}
+
 .comment {
     border-bottom-style: dashed;
     border-bottom-color: rgb(255, 255, 0);

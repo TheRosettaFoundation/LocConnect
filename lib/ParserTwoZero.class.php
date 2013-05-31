@@ -76,7 +76,7 @@ class ParserTwoZero extends IParser
                 $source = BASE_XLFV_SRCERR;
             }
 
-            print '<tr class="row" id="src">';
+            print '<tr class="row-no-click" id="src">';
             print '<td>'.BASE_XLFV_SRC.'</td>';
             if ($translate) {
                 print '<td colspan="3" rowspan="1">'.$source.'</td>';
@@ -97,7 +97,7 @@ class ParserTwoZero extends IParser
                 $target = BASE_XLFV_SRCERR;
             }
             print '<tr id="tgt">';
-            print '<td>'.BASE_XLFV_TGT.'</td>';
+            print '<td class="row-no-click">'.BASE_XLFV_TGT.'</td>';
             print '<td colspan="3" rowspan="1" ';
             print 'class="dblclick">'.$target.'</td>';
             print '</tr>';
@@ -114,13 +114,6 @@ class ParserTwoZero extends IParser
                         print "<tr class='row-no-click'>";
                     }
 
-                    $source = $match->getElementsByTagName("source")->item(0)->nodeValue;
-                    if ($source != "") {
-                        print '<td class="alt">Source: '.$source.'</td>';
-                    } else {
-                        print '<td> <em>'.BASE_XLFV_ALTERR.' </em> </td>';
-                    }
-
                     $metaData = "";
                     $length = $match->attributes->length;
                     for ($i = 0; $i < $length; $i++) {
@@ -134,12 +127,33 @@ class ParserTwoZero extends IParser
                     if ($quality == "" || $quality == NULL) {
                         $quality = "N/A";
                     }
+
+                    $source = $match->getElementsByTagName("source")->item(0);
+                    $length = $source->attributes->length;
+                    for ($i = 0; $i < $length; $i++) {
+                        $att = $source->attributes->item($i)->name;
+                        $val= $source->attributes->item($i)->value;
+                        $metaData .= "source-$att : $val<br/>";
+                    }
+                    if ($source != "") {
+                        print '<td class="alt">Source: '.$source->nodeValue.'</td>';
+                    } else {
+                        print '<td> <em>'.BASE_XLFV_ALTERR.' </em> </td>';
+                    }
+
+                    $target = $match->getElementsByTagName("target")->item(0);
+                    $length = $target->attributes->length;
+                    for ($i = 0; $i < $length; $i++) {
+                        $att = $target->attributes->item($i)->name;
+                        $val= $target->attributes->item($i)->value;
+                        $metaData .= "target-$att : $val<br/>";
+                    }
+
                     print "<td class=\"red\" id=\"altb\" rowspan='2'>$quality</td>";
                     print "<td class=\"txt\" id=\"altb\" rowspan='2'>$metaData</td></tr>";
 
-                    $target = $match->getElementsByTagName("target")->item(0)->nodeValue;
                     print "<tr class='row-no-click'>";
-                    print "<td class='alt'>Target: ".$target."</td>";
+                    print "<td class='alt'>Target: ".$target->nodeValue."</td>";
                     print "</tr>";
                     print "<tr><td>   </td></tr>";
                 }
@@ -228,6 +242,18 @@ class ParserTwoZero extends IParser
                 $source_parsed .= "<a href='$ref' title='$category' target='_blank'>";
                 $closingTag .= "</a>";
             }
+
+            $translate = $node->getAttribute("translate");
+            if ($translate) {
+                if ($translate == "no") {
+                    $source_parsed .= " <span class='no-translate'>";
+                    $closingTag .= "</span>";
+                } else {
+                    $source_parsed .= " <span class='translate'>";
+                    $closingTag .= "</span>";
+                }
+            }
+
             if ($node->hasChildNodes()) {
                 $child = $node->firstChild;
                 while($child != NULL) {
