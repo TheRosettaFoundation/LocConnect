@@ -1,4 +1,5 @@
 <?php
+header('Access-Control-Allow-Origin: *');
 define('BASE_UPLOAD_PATH',dirname($_SERVER["SCRIPT_FILENAME"]).'/uploads/');			//UPLOAD FOLDER PATH
 date_default_timezone_set('Europe/Dublin');
 //ini_set('display_errors',1); error_reporting(E_ALL|E_STRICT); //Set php error display
@@ -107,6 +108,8 @@ define('BASE_T_LOADING', 'Loading');
 $arr = array(
  "DDC" => "Data Domain Classifier",
  "ITS" => "ITS Validator",
+ "TA" => "TA Broker",
+ "TP" => "Target Populator",
  "EXT" => "Extractor",
  "MGR" => "Merger",
  "LKR" => "Localisation Knowledge Repository",
