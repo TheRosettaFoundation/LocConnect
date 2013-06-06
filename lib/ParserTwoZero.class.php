@@ -336,7 +336,7 @@ class ParserTwoZero extends IParser
             foreach ($notes as $note) {
                 $val=$note->nodeValue;
                 if ($val!="") {
-                    print '<tr class="header"><td colspan="2" rowspan="1">'.$val.'</td></tr>';
+                    print '<tr class="row"><td colspan="2" rowspan="1">'.$val.'</td></tr>';
                 }
             }
         }
