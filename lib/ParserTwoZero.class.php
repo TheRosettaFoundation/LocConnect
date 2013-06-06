@@ -273,10 +273,9 @@ class ParserTwoZero extends IParser
         print '<center><p class="txt"><a id="close" href="#"> <em> hide Metadata </em> </a></p></center>' ;
         print '<div id="metadata">';
         print '<table class="meta" border="0" cellpadding="2" cellspacing="0" align="center">';
-        
+
         $tagNames = array('pmui-data' => BASE_T_XMETA, 'file' => BASE_T_XFILE,
-                    'task' => BASE_T_XWF, 'phase' => BASE_T_XPM,
-                    'tool' => BASE_T_XTM);
+                    'task' => BASE_T_XWF);
         foreach($tagNames as $tagName => $displayName) {
             $nodes = $this->domDoc->getElementsByTagName($tagName);
             print '<tr class="header"><td colspan="2" rowspan="1">'.$displayName.'</td></tr>';
@@ -294,31 +293,51 @@ class ParserTwoZero extends IParser
             }
         }
 
-        $nodes = $this->domDoc->getElementsByTagName ("count-group");
-        print '<tr class="header"><td colspan="2" rowspan="1">'.BASE_T_XCGM.'</td></tr>';
-        foreach ($nodes as $node) {
-            $length = $node->attributes->length;
-            for ($i = 0; $i < $length; ++$i) {
-                $name =$node->attributes->item($i)->value;
-                if ($node->hasChildNodes()) {
-                    $countNode=$node->getElementsByTagName("count");
-                    $func=$countNode->item(0)->attributes->item(0)->value;
-                    $type=$countNode->item(0)->attributes->item(1)->value;
-                    $val=$countNode->item(0)->nodeValue;
-                    if ($val!="") {
-                        print "<tr class='row'><td  class='bold'>".$func." ".$type." count(".$name.")</td><td>".$val."</td></tr>";
+        $metadata = $this->domDoc->getElementsByTagName("mda:metadata");
+        if ($metadata->length < 1) {
+            $metadata = $this->domDoc->getElementsByTagName("metadata");
+        }
+
+        if ($metadata->length > 0) {
+            foreach ($metadata as $data) {
+                $metagroups = $data->getElementsByTagName("mda:metagroup");
+                if ($metagroups->length < 1) {
+                    $metagroups = $data->getElementsByTagName("metagroup");
+                }
+
+                if ($metagroups->length > 0) {
+                    foreach ($metagroups as $metagroup) {
+                        $metas = $metagroup->getElementsByTagName("mda:meta");
+                        if ($metas->length < 1) {
+                            $metas = $metagroup->getElementsByTagName("meta");
+                        }
+
+                        if ($metas->length > 0) {
+                            $category = $metagroup->getAttribute("category");
+                            if (!$category || $category == '') {
+                                $category = "Group Data";
+                            }
+
+                            print '<tr class="header"><td colspan="2" rowspan="1">'.$category.'</td></tr>';
+                            foreach ($metas as $meta) {
+                                $name = $meta->getAttribute('type');
+                                $value = $meta->nodeValue;
+                                print "<tr class='row'><td class='bold'>$name</td><td>$value</td></tr>";
+                            }
+                        }
+                        print '<tr class="blankrow"><td colspan="2" rowspan="1">&nbsp;</td></tr>';
                     }
                 }
             }
         }
-        print '<tr class="blankrow"><td colspan="2" rowspan="1">&nbsp;</td></tr>';
-        
-        $nodes = $this->domDoc->getElementsByTagName ("note");
-        print '<tr class="header"><td colspan="2" rowspan="1">'.BASE_T_XNM.'</td></tr>';
-        foreach ($nodes as $node) {
-            $val=$node->nodeValue;
-            if ($val!="") {
-                print '<tr class="header"><td colspan="2" rowspan="1">'.$val.'</td></tr>';
+        $notes = $this->domDoc->getElementsByTagName ("note");
+        if ($notes->length > 0) {
+            print '<tr class="header"><td colspan="2" rowspan="1">'.BASE_T_XNM.'</td></tr>';
+            foreach ($notes as $note) {
+                $val=$note->nodeValue;
+                if ($val!="") {
+                    print '<tr class="header"><td colspan="2" rowspan="1">'.$val.'</td></tr>';
+                }
             }
         }
         
