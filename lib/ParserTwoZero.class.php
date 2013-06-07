@@ -349,6 +349,10 @@ class ParserTwoZero extends IParser
     public function printGlossary()
     {
         $glossaries = $this->domDoc->getElementsByTagName("glossentry");
+        if ($glossaries->length < 1) {
+            $glossaries = $this->domDoc->getElementsByTagName('gls:glossentry');
+        }
+
         if ($glossaries->length > 0) {
             echo "<center><h3>Glossary</h3></center>";
             echo "<table class='trans' border=\"1\" cellpadding=\"3\" cellspacing=\"0\" align='center'>";
@@ -360,11 +364,11 @@ class ParserTwoZero extends IParser
                     $translation = "";
                     $node = $glossary->firstChild;
                     while ($node != NULL) {
-                        if ($node->nodeName == "itsx:term" || $node->nodeName == "term") {
+                        if ($node->nodeName == "gls:term" || $node->nodeName == "term") {
                             $term = $node->textContent;
-                        } elseif ($node->nodeName == "itsx:translation" || $node->nodeName == "translation") {
+                        } elseif ($node->nodeName == "gls:translation" || $node->nodeName == "translation") {
                             $translation = $node->textContent;
-                        } elseif ($node->nodeName == "itsx:definition" || $node->nodeName == "definition") {
+                        } elseif ($node->nodeName == "gls:definition" || $node->nodeName == "definition") {
                             $translation = $node->textContent;
                         }
                         $node = $node->nextSibling;
