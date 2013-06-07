@@ -231,22 +231,61 @@ function sendResource($id, $type, $metdata, $desc, $content)
         if ($xliffVersion == "2.0") {
             $files = $xliff->getElementsByTagName('file');
             foreach ($files as $file) {
-                if ($file->getElementsByTagName("pmui-data")->length > 0) {
-                    $pmuiData = $file->getElementsByTagName("pmui-data")->item(0);
-                } else {
-                    $pmuiData = $xliff->createElement('pmui-data');
+                $metadata = $file->getElementsByTagName('metadata');
+                if ($metadata->length < 1) {
+                    $metadata = $file->getElementsByTagName('mda:metadata');
                 }
-                $pmuiData->setAttribute("pname", $project_name);
-                $pmuiData->setAttribute("pdescription", $project_desc);
-                $pmuiData->setAttribute("startdate", $start_date);
-                $pmuiData->setAttribute("deadline", $deadline);
-                $pmuiData->setAttribute("budget", $budget);
-                $pmuiData->setAttribute("qrequirement", $quality);
-                $pmuiData->setAttribute("use-mt", $mt);
-                $pmuiData->setAttribute("client", $client);
-                $pmuiData->setAttribute("lkr", $sourceValidation);
-                $pmuiData->setAttribute("lmc", $lmc);
-                $file->appendChild($pmuiData);
+
+                if ($metadata->length > 0) {
+                    $metadata = $metadata->item(0);
+                } else {
+                    $metadata = $xliff->createElement('mda:metadata');
+                    $file->appendChild($metadata);
+                }
+
+                $xpath = new DOMXPath($xliff);
+                $pmuiData = $xpath->query("//metagroup[@category='pmui-data']");
+                if ($pmuiData->length < 1) {
+                    $pmuiData = $xpath->query("//mda:metagroup[@category='pmui-data']");
+                }
+
+                if ($pmuiData->length > 0) {
+                    $pmuiData = $pmuiData->item(0);
+                } else {
+                    $pmuiData = $xliff->createElement('mda:metagroup');
+                    $pmuiData->setAttribute('category', 'pmui-data');
+                    $file->appendChild($pmuiData);
+                }
+                $element = $xliff->createElement('mda:meta', $project_name);
+                $element->setAttribute('type', 'pname');
+                $pmuiData->appendChild($element);
+                $element = $xliff->createElement('mda:meta', $project_desc);
+                $element->setAttribute('type', 'pdescription');
+                $pmuiData->appendChild($element);
+                $element = $xliff->createElement('mda:meta', $start_date);
+                $element->setAttribute('type', 'startdate');
+                $pmuiData->appendChild($element);
+                $element = $xliff->createElement('mda:meta', $deadline);
+                $element->setAttribute('type', 'deadline');
+                $pmuiData->appendChild($element);
+                $element = $xliff->createElement('mda:meta', $budget);
+                $element->setAttribute('type', 'budget');
+                $pmuiData->appendChild($element);
+                $element = $xliff->createElement('mda:meta', $quality);
+                $element->setAttribute('type', 'qrequirement');
+                $pmuiData->appendChild($element);
+                $element = $xliff->createElement('mda:meta', $mt);
+                $element->setAttribute('type', 'use-mt');
+                $pmuiData->appendChild($element);
+                $element = $xliff->createElement('mda:meta', $client);
+                $element->setAttribute('type', 'client');
+                $pmuiData->appendChild($element);
+                $element = $xliff->createElement('mda:meta', $sourceValidation);
+                $element->setAttribute('type', 'lkr');
+                $pmuiData->appendChild($element);
+                $element = $xliff->createElement('mda:meta', $lmc);
+                $element->setAttribute('type', 'lmc');
+                $pmuiData->appendChild($element);
             }
         } else {
             $headers = $xliff->getElementsByTagName( 'header' );
