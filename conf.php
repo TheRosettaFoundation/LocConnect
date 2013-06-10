@@ -1,5 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers : Content-Type');
 define('BASE_UPLOAD_PATH',dirname($_SERVER["SCRIPT_FILENAME"]).'/uploads/');			//UPLOAD FOLDER PATH
 date_default_timezone_set('Europe/Dublin');
 //ini_set('display_errors',1); error_reporting(E_ALL|E_STRICT); //Set php error display
