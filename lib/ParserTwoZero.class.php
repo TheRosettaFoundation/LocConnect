@@ -274,8 +274,7 @@ class ParserTwoZero extends IParser
         print '<div id="metadata">';
         print '<table class="meta" border="0" cellpadding="2" cellspacing="0" align="center">';
 
-        $tagNames = array('pmui-data' => BASE_T_XMETA, 'file' => BASE_T_XFILE,
-                    'task' => BASE_T_XWF);
+        $tagNames = array('file' => BASE_T_XFILE);
         foreach($tagNames as $tagName => $displayName) {
             $nodes = $this->domDoc->getElementsByTagName($tagName);
             print '<tr class="header"><td colspan="2" rowspan="1">'.$displayName.'</td></tr>';
