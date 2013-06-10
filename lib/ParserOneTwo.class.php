@@ -275,7 +275,7 @@ class ParserOneTwo extends IParser
         foreach ($nodes as $node) {
             $val=$node->nodeValue;
             if ($val!="") {
-                print '<tr class="header"><td colspan="2" rowspan="1">'.$val.'</td></tr>';
+                print '<tr class="row"><td colspan="2" rowspan="1">'.$val.'</td></tr>';
             }
         }
         
