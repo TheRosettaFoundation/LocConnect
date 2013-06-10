@@ -240,7 +240,8 @@ function sendResource($id, $type, $metdata, $desc, $content)
                     $metadata = $metadata->item(0);
                 } else {
                     $metadata = $xliff->createElement('mda:metadata');
-                    $file->appendChild($metadata);
+                    $unit = $file->getElementsByTagName('unit')->item(0);
+                    $file->insertBefore($metadata, $unit);
                 }
 
                 $xpath = new DOMXPath($xliff);
