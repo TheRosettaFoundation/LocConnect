@@ -231,9 +231,9 @@ function sendResource($id, $type, $metdata, $desc, $content)
         if ($xliffVersion == "2.0") {
             $files = $xliff->getElementsByTagName('file');
             foreach ($files as $file) {
-                $metadata = $file->getElementsByTagName('metadata');
+                $metadata = $file->getElementsByTagName('mda:metadata');
                 if ($metadata->length < 1) {
-                    $metadata = $file->getElementsByTagName('mda:metadata');
+                    $metadata = $file->getElementsByTagName('metadata');
                 }
 
                 if ($metadata->length > 0) {
@@ -244,17 +244,14 @@ function sendResource($id, $type, $metdata, $desc, $content)
                 }
 
                 $xpath = new DOMXPath($xliff);
-                $pmuiData = $xpath->query("//metagroup[@category='pmui-data']");
-                if ($pmuiData->length < 1) {
-                    $pmuiData = $xpath->query("//mda:metagroup[@category='pmui-data']");
-                }
+                $pmuiData = $xpath->query("//*[local-name() = 'metagroup'][@category='pmui-data']");
 
                 if ($pmuiData->length > 0) {
                     $pmuiData = $pmuiData->item(0);
                 } else {
                     $pmuiData = $xliff->createElement('mda:metagroup');
                     $pmuiData->setAttribute('category', 'pmui-data');
-                    $file->appendChild($pmuiData);
+                    $metadata->appendChild($pmuiData);
                 }
                 $element = $xliff->createElement('mda:meta', $project_name);
                 $element->setAttribute('type', 'pname');
