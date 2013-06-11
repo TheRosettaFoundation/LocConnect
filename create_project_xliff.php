@@ -105,6 +105,7 @@ function sendResource($id, $type, $metdata, $desc, $content)
 	
 	$mt=strtoupper($_POST['MT']);
 	$sourceValidation=strtoupper($_POST['SourceValidation']);
+    $useTA = strtoupper($_POST['useTA']);
 	
 
    // Check if the filetype is allowed, if not DIE and inform the user.
@@ -280,6 +281,9 @@ function sendResource($id, $type, $metdata, $desc, $content)
                 $pmuiData->appendChild($element);
                 $element = $xliff->createElement('mda:meta', $sourceValidation);
                 $element->setAttribute('type', 'lkr');
+                $pmuiData->appendChild($element);
+                $element = $xliff->createElement('mda:meta', $useTA);
+                $element->setAttribute('type', 'ta');
                 $pmuiData->appendChild($element);
                 $element = $xliff->createElement('mda:meta', $lmc);
                 $element->setAttribute('type', 'lmc');

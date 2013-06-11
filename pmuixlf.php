@@ -98,6 +98,13 @@ $("#datepicker1").datepicker();
 <td style="width: 202px;"><input name="SourceValidation" value="Yes" type="radio" checked />Yes<input name="SourceValidation" value="No" type="radio" /> No</td>
 </tr>
 <tr>
+<td style="width: 202px;">Use TA</td>
+<td style="width: 202px;">
+    <input name="useTA" value="Yes" type="radio" checked />Yes
+    <input name="useTA" value="No" type="radio" />No
+</td>
+</tr>
+<tr>
 <td style="width: 202px;"></td>
 <td style="width: 315px;"></td>
 </tr>
