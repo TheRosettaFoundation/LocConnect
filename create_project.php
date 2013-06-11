@@ -417,7 +417,7 @@
 //upload resource
                         $lmc = "NO";
 
-                        echo "<br> filename = $content<br>";
+                       // echo "<br> filename = $content<br>";
                         if ($tmpName1) {
                             if (move_uploaded_file($tmpName1, $upload_path . $filename1)) {
                                 $resID = sendResource($project_ID, 'lmc', 'domain:test', 'Test file', $content1, $tmpName1);
