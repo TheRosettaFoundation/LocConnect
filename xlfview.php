@@ -4,7 +4,7 @@
   <head>
   <?php
 	require_once('./conf.php');
-    require_once('./xliffParser.php');
+    require_once 'lib/IParser.class.php';
 	/*------------------------------------------------------------------------*
  * © 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
@@ -167,7 +167,7 @@ $('a#closet').click(function(){ $('#translate').hide('slow');});
 			 die("project ID not found");
 			 };
 
-    $mParser = new XliffParser($out);
+    $mParser = IParser::getParser($out);
     $mParser->printTranslationInfo(true);
     $mParser->printLegend();
     print "<br />";

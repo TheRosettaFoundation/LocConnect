@@ -1,15 +1,15 @@
 <?php
-class XliffParser
-{
-    private $domDoc;
 
-    function XliffParser($xliff_source)
+require_once 'IParser.class.php';
+
+class ParserOneTwo extends IParser
+{
+    public function __construct($dom)
     {
-        $this->domDoc = new DomDocument();
-        $this->domDoc->loadXML($xliff_source);
+        parent::__construct($dom);
     }
 
-    function printTranslationInfo($download = false)
+    public function printTranslationInfo($download = false)
     {
         print '<center> <a href="#" id="trans"><h2>'.BASE_XLFV_TRAN.'</h2> </a></center>';
         if($download) {
@@ -48,30 +48,41 @@ class XliffParser
             $node = $node->parentNode;
         }
         $nodes = $this->domDoc->getElementsByTagName("trans-unit");
-
+        
         //print '<tr class="header"><td colspan="2" rowspan="1">XLIFF Count Group Metadata</td></tr>';
-        foreach ($nodes as $node)
-        {
+        foreach ($nodes as $node) {
             $name =$node->getAttribute("id");
             $translateSeg = $translate;
             $transAtt = $node->getAttribute("translate");
             if ($transAtt !== NULL) {
                 if ($transAtt == 'no') {
-                    $translateSeg = false;
+                $translateSeg = false;
                 } else {
                     $translateSeg = true;
                 }
             }
-            if ($node->hasChildNodes())
-            {
-                $sourceNode=$node->getElementsByTagName("source")->item(0);
-                $source = $this->parseElement($sourceNode);
+            if ($node->hasChildNodes()) {
+                if ($node->getElementsByTagName("seg-source")->length > 0) {
+                    $sourceNode=$node->getElementsByTagName("seg-source")->item(0);
+                    $source = $this->parseElement($sourceNode);
+                } elseif ($node->getElementsByTagName("source")->length > 0) {
+                    $sourceNode=$node->getElementsByTagName("source")->item(0);
+                    $source = $this->parseElement($sourceNode);
+                } else {
+                    $source=BASE_XLFV_SRCERR;
+                }
                 if (trim($source)=="") {
                     $source=BASE_XLFV_SRCERR;
                 }
             }
             $targetNode=$node->getElementsByTagName("target");
-            if ($targetNode->length>0) $target=$targetNode->item(0)->nodeValue; else $target=BASE_XLFV_TGTERR;
+            if ($targetNode->item(0) && $targetNode->item(0)->parentNode &&
+                $targetNode->item(0)->parentNode->nodeName == "alt-trans") {
+                $target=BASE_XLFV_TGTERR;
+            } else {
+                if ($targetNode->length>0) $target=$targetNode->item(0)->nodeValue; else $target=BASE_XLFV_TGTERR;
+            }
+            
             if (trim($target)=="") $target=BASE_XLFV_TGTERR;
             $altTrans=$node->getElementsByTagName("alt-trans");
             print '<tr class="header"><td colspan="4" rowspan="1">'.$name.'</td></tr>';
@@ -79,7 +90,7 @@ class XliffParser
             if($translateSeg) {
                 print '<td>'.BASE_XLFV_SRC.'</td>';
                 print '<td colspan="3" rowspan="1">';
-//                print htmlentities($source,ENT_QUOTES,'UTF-8');
+//              print htmlentities($source,ENT_QUOTES,'UTF-8');
                 print $source;
                 //print $source;
                 print '</td>';
@@ -98,37 +109,42 @@ class XliffParser
                 print "class='dblclick' id='$name'";
             }
             print '>'.htmlentities($target,ENT_QUOTES,'UTF-8').'</td>';
-                    
+                
             print '</tr>';
-                     
-            if ($altTrans->length>0)
-            {
+
+            if ($altTrans->length>0) {
                 $k=0;
-                foreach ($altTrans as $alt)
-                {
+                foreach ($altTrans as $alt) {
+                    $altSource = $alt->getElementsByTagName("source")->item(0);
+                    $altTarget = $alt->getElementsByTagName("target")->item(0);
                     $k++;
                     $altval=$alt->nodeValue;
                     if ($k==1) {
-                        print '<tr class="row-no-click"><td colspan="1" rowspan="'.(string)$altTrans->length.'">'.BASE_XLFV_ALT.'</td>'; 
+                        print '<tr class="row-no-click"><td colspan="1" rowspan="'.
+                                (string)($altTrans->length * 3).'">'.BASE_XLFV_ALT.'</td>';
                     } else {
                         print "<tr class='row-no-click'>";
                     }
                     if ($altval!="") {
-                        print '<td class="alt">'.$altval.'</td>';
+                        print '<td class="alt">Source: '.$altSource->nodeValue.'</td>';
                     } else {
                         print '<td> <em>'.BASE_XLFV_ALTERR.' </em> </td>';
                     }
                     $temp="";
                     $length = $alt->attributes->length;
-                    for ($i = 0; $i < $length; ++$i)
-                    {
+                    for ($i = 0; $i < $length; ++$i) {
                         $att =$alt->attributes->item($i)->name;
                         $val=$alt->attributes->item($i)->value;
                         if ($att!="match-quality") $temp=$temp.$att. " : ".$val. "<br/>";
                     }
                     $mq =$alt->getAttribute("match-quality");
                     if ($mq=="" or $mq==NULL) $mq="N/A";
-                    print '<td class="red" id="altb">'.$mq.'</td><td class="txt" id="altb">'.$temp.'</td></tr>';
+                    print '<td class="red" id="altb" rowspan=\'2\'>'.$mq.
+                            '</td><td class="txt" id="altb" rowspan=\'2\'>'.$temp.'</td></tr>';
+                    print "<tr class='row-no-click'>";
+                    print "<td class='alt'>Target: ".$altTarget->nodeValue."</td>";
+                    print "</tr>";
+                    print "<tr><td>   </td></tr>";
                 }
             } else {
                 print '<tr class="row-no-click"><td colspan="4" rowspan="1" class="alt"> <em>'.BASE_XLFV_ALTERR.'</em> </td></tr>';
@@ -160,7 +176,7 @@ class XliffParser
                         $source_parsed .= "<sup><a target='_blank' href='$ref'>[ref]</a></sup>";
                     }
                 } elseif(strcasecmp($mtype, "x-DNT") == 0 || strcasecmp($mtype, "preserve") == 0
-                               || strcasecmp($mtype, "protected") == 0) {
+                                || strcasecmp($mtype, "protected") == 0) {
                     $source_parsed .= " <span class='no-translate'>";
                     $closingTag .= "</span>";
                 } elseif(strcasecmp($mtype, "x-its-Translate-Yes") == 0) {
@@ -170,7 +186,7 @@ class XliffParser
                     $confidence = $node->getAttribute("its:termConfidence");
                     if ($confidence == "") {
                         $confidence = $node->getAttribute("its:termConfidence");
-                    }    
+                    }
                     $ref = $node->getAttribute("its:termInfoRef");
                     if ($ref == "") {
                         $ref = $node->getAttribute("termInfoRef");
@@ -204,30 +220,27 @@ class XliffParser
             }
             $source_parsed .= $closingTag;
         }
-
+        
         return $source_parsed;
     }
 
-    function printMetaData()
+    public function printMetaData()
     {
         print '<center> <a href="#" id="meta"><h2>'.BASE_XLFV_META.'</h2> </a></center>';
         print '<center><p class="txt"><a id="close" href="#"> <em> hide Metadata </em> </a></p></center>' ;
         print '<div id="metadata">';
         print '<table class="meta" border="0" cellpadding="2" cellspacing="0" align="center">';
-
-        $tagNames = array('pmui-data' => BASE_T_XMETA, 'file' => BASE_T_XFILE, 
-                            'task' => BASE_T_XWF, 'phase' => BASE_T_XPM, 
-                            'tool' => BASE_T_XTM);
-        foreach($tagNames as $tagName => $displayName)
-        {
+        
+        $tagNames = array('pmui-data' => BASE_T_XMETA, 'file' => BASE_T_XFILE,
+                    'task' => BASE_T_XWF, 'phase' => BASE_T_XPM,
+                    'tool' => BASE_T_XTM);
+        foreach($tagNames as $tagName => $displayName) {
             $nodes = $this->domDoc->getElementsByTagName($tagName);
             print '<tr class="header"><td colspan="2" rowspan="1">'.$displayName.'</td></tr>';
-
-            foreach ($nodes as $node)
-            {
+            
+            foreach ($nodes as $node) {
                 $length = $node->attributes->length;
-                for ($i = 0; $i < $length; ++$i)
-                {
+                for ($i = 0; $i < $length; ++$i) {
                     $name =$node->attributes->item($i)->name;
                     $val =$node->attributes->item($i)->value;
                     if ($val!="") {
@@ -237,17 +250,14 @@ class XliffParser
                 print '<tr class="blankrow"><td colspan="2" rowspan="1">&nbsp;</td></tr>';
             }
         }
-
+        
         $nodes = $this->domDoc->getElementsByTagName ("count-group");
         print '<tr class="header"><td colspan="2" rowspan="1">'.BASE_T_XCGM.'</td></tr>';
-        foreach ($nodes as $node)
-        {
+        foreach ($nodes as $node) {
             $length = $node->attributes->length;
-            for ($i = 0; $i < $length; ++$i)
-            {
+            for ($i = 0; $i < $length; ++$i) {
                 $name =$node->attributes->item($i)->value;
-                if ($node->hasChildNodes())
-                {
+                if ($node->hasChildNodes()) {
                     $countNode=$node->getElementsByTagName("count");
                     $func=$countNode->item(0)->attributes->item(0)->value;
                     $type=$countNode->item(0)->attributes->item(1)->value;
@@ -259,28 +269,25 @@ class XliffParser
             }
         }
         print '<tr class="blankrow"><td colspan="2" rowspan="1">&nbsp;</td></tr>';
-
+        
         $nodes = $this->domDoc->getElementsByTagName ("note");
         print '<tr class="header"><td colspan="2" rowspan="1">'.BASE_T_XNM.'</td></tr>';
-        foreach ($nodes as $node)
-        {
+        foreach ($nodes as $node) {
             $val=$node->nodeValue;
-            if ($val!="")
-            {
-                print '<tr class="header"><td colspan="2" rowspan="1">'.$val.'</td></tr>';
+            if ($val!="") {
+                print '<tr class="row"><td colspan="2" rowspan="1">'.$val.'</td></tr>';
             }
         }
         
         print '</tbody></table>';
         print '<center><p class="txt"><a id="close" href="#"> <em>'.BASE_XLFV_HIDEM.'</em> </a></p></center></div>' ;
         print '<br>';
-        
     }
 
     public function printGlossary()
     {
         $glossaries = $this->domDoc->getElementsByTagName("glossary-entry");
-        if (count($glossaries) > 0) {
+        if ($glossaries->length > 0) {
             echo "<center><h3>Glossary</h3></center>";
             echo "<table class='trans' border=\"1\" cellpadding=\"3\" cellspacing=\"0\" align='center'>";
             echo "<tr class='header'><th>ID</th><th>Term</th><th>Translation</th></tr>";
@@ -310,38 +317,5 @@ class XliffParser
             }
             echo "</table>";
         }
-    }
-
-    function printDownloadInfo()
-    {
-        $id = $_GET['id'];
-        if($id != '') {
-            print "<br/>";
-            print "<center>";
-                print "<a class='txt' href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/download.php?id=".$id."'>".BASE_T_DXLIFF."</a>";
-                print "&nbsp;|&nbsp;";
-                print "<a class='txt' href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/xconv.php?id=".$id."&method=download'>";
-                    print BASE_XLFV_DOWNTF;
-                print "</a>&nbsp;|&nbsp;";
-                print "<a class='txt' ";
-                print "href='http://".$_SERVER['HTTP_HOST'].BASE_URL."/xconv.php?id=".$id."&method=view&style=".BASE_PREV_STYLE."'>";
-                   print BASE_XLFV_PREVF;
-               print "</a>";
-            print "</center>";
-            print "<br/>";
-        }
-    }
-
-    function printLegend()
-    {
-        print "<center>";
-            print "<h3>Legend</h3>";
-        print "</center>";
-        print '<table class="trans" border="0" cellpadding="3" cellspacing="0" align="center"><tbody>';
-            print "<tr class='header'><td>Format</td><td>Meaning</td></tr>";
-            print "<tr><td class='no-translate'>Sample</td><td>Text marked as \"Do Not Translate\"</td></tr>";
-            print "<tr><td class='comment'>Comment</td><td>Hover over this text for a comment</td></tr>";
-            print "<tr><td class='term'>Term</td><td>Text marked as a term. Hover over for confidence.</td></tr>";
-        print "</table>";
     }
 }

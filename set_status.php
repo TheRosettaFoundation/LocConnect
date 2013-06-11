@@ -73,25 +73,57 @@ if (strtolower($msg)=='complete')
 			$xml=str_replace('=\'\'','$^$',$output_com_1);
 			$xml=str_replace('\'\'','\'',$output_com_1);
 			$xml=str_replace('$^$','=\'\'',$output_com_1);
+            $c = 0;
 			$xliff = new DOMDocument();
 			$xliff->loadXML($xml);	
-			$xpath = new DOMXPath($xliff);
-			$xpath->registerNamespace('a', "urn:oasis:names:tc:xliff:document:1.2");
-			$query = '//a:workflow/a:task';
-			$tasks = $xpath->query($query);
-			$c=0;
-			foreach($tasks as $task)
-			{
-				
-				$tool=$task->getAttribute("tool-id");
-				$wforder=(int)$task->getAttribute("order");
-				//if ($step==1) $wforder=$wforder+1; else	$wforder=$wforder+2;
-				$wforder=$wforder+1;
-				$statement="INSERT INTO Demo(Job, Com, Status, WOrder) VALUES ('".$id."', '".$tool."','waiting','".(string)$wforder."')";
-				//$st2=$st2."<tool>".$statement."</tool>";
-				$count = $db->exec($statement);
-				if ($wforder>$c) $c=$wforder;
-			}
+            $xliffTag = $xliff->getElementsByTagName("xliff")->item(0);
+            if ($version = $xliffTag->getAttribute("version")) {
+                if ($version == "2.0") {
+                    $xpath = new DOMXPath($xliff);
+                    $workflowEntries = $xpath->query("//*[local-name() = 'metagroup'][@category = 'workflow_entry']");
+                    if ($workflowEntries->length > 0) {
+                        foreach ($workflowEntries as $entry) {
+                            $data = $entry->getElementsByTagName("mda:meta");
+                            if ($data->length < 1) {
+                                $data = $entry->getElementsByTagName("meta");
+                            }
+                            
+                            $tool = "";
+                            $wforder = "";
+                            if ($data->length > 0) {
+                                foreach ($data as $meta) {
+                                    if ($meta->getAttribute('type') == 'tool_id') {
+                                        $tool = $meta->nodeValue;
+                                    } elseif ($meta->getAttribute('type') == 'order') {
+                                        $wforder = ((int)$meta->nodeValue) + 1;
+                                    }
+                                }
+                            }
+
+                            if ($tool != "" && $wforder != "") {
+                                $statement="INSERT INTO Demo(Job, Com, Status, WOrder) VALUES ('".
+                                            $id."', '".$tool."','waiting','".(string)$wforder."')";
+                                $count = $db->exec($statement);
+                                if ($wforder>$c) $c=$wforder;
+                            }
+                        }
+                    }
+                } else {
+                    $workflow = $xliff->getElementsByTagName("workflow")->item(0);
+                    $tasks = $workflow->getElementsByTagName("task");
+                    if ($tasks->length > 0) {
+                        foreach($tasks as $task) {
+                            $tool=$task->getAttribute("tool-id");
+                            $wforder=(int)$task->getAttribute("order");
+                            $wforder=$wforder+1;
+                            $statement="INSERT INTO Demo(Job, Com, Status, WOrder) VALUES ('".
+                                        $id."', '".$tool."','waiting','".(string)$wforder."')";
+                            $count = $db->exec($statement);
+                            if ($wforder>$c) $c=$wforder;
+                        }   
+                    }
+                }
+            }
 			
 			$count = $db->exec('Update Project set MaxSteps='.(string)$c.' where ID="'.$id.'"');
 			$st='SELECT Com FROM Demo where job="'.$id.'" and WOrder='.$nextStep;
