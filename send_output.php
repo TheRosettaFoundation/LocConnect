@@ -51,9 +51,9 @@ function sendOutput($id, $com, $data)
   return $response;
 }
 
-$id=$_POST["id"];
-$com=$_POST["com"];
-$data=$_POST["data"];
+$id=$_REQUEST["id"];
+$com=$_REQUEST["com"];
+$data=$_REQUEST["data"];
 //echo "data before $data";
 
 //$data=addcslashes($_POST["data"], "UTF-8");
