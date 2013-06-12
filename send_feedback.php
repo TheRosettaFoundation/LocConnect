@@ -1,7 +1,7 @@
 <?php
 header("Content-Type:text/xml;  charset=utf-8");
 /*------------------------------------------------------------------------*
- * © 2010 University of Limerick. All rights reserved. This material may  *
+ * ï¿½ 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
@@ -35,9 +35,9 @@ function sendFeedback($id, $com, $msg)
   return $response;
 }
 
-$id=$_GET["id"];
-$com=$_GET["com"];
-$msg=$_GET["msg"];
+$id=$_REQUEST["id"];
+$com=$_REQUEST["com"];
+$msg=$_REQUEST["msg"];
 $msg=urldecode($msg);  
 if (strlen($msg)>250) $msg=substr($msg,0,250).'..';
 $msg=stripslashes($msg);
@@ -54,4 +54,3 @@ $msg=stripslashes($msg);
 //echo "com:".$com."<br/>";
 //echo "msg:".$msg."<br/>";
 echo sendFeedback($id,$com,$content);
-;?>

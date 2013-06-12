@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: text/xml; charset=utf-8');
 /*------------------------------------------------------------------------*
- * © 2010 University of Limerick. All rights reserved. This material may  *
+ * ï¿½ 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
@@ -32,6 +32,6 @@ function fetchJob($com)
   return $fileData;
 }
 
-$com=$_GET["com"];
+$com=$_REQUEST["com"];
 echo fetchJob($com);
 ;?>
