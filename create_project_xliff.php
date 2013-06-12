@@ -318,6 +318,8 @@ function sendResource($id, $type, $metdata, $desc, $content)
                 $ref2->setAttribute("client", $client);
                 $ref2->setAttribute("lkr", $sourceValidation);
                 $ref2->setAttribute("lmc", $lmc);
+                $ref2->setAttribute("ta", $useTA);
+                $ref2->setAttribute("tp", $useTP);
                 $ref1->appendChild($ref2);
                 $ref->appendChild($ref1);
                 $header->appendChild($ref);
