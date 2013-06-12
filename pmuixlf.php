@@ -105,6 +105,13 @@ $("#datepicker1").datepicker();
 </td>
 </tr>
 <tr>
+<td style="width: 202px;">Use TP</td>
+<td style="width: 202px;">
+    <input name="useTP" value="Yes" type="radio" checked />Yes
+    <input name="useTP" value="No" type="radio" />No
+</td>
+</tr>
+<tr>
 <td style="width: 202px;"></td>
 <td style="width: 315px;"></td>
 </tr>
