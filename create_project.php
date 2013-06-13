@@ -112,6 +112,8 @@
                     $budget = $_POST['budget'];
                     $quality = strtoupper($_POST['Quality']);
                     $mt = strtoupper($_POST['MT']);
+                    $ta = strtoupper($_POST['useTA']);
+                    $tp = strtoupper($_POST['useTP']);
                     $company_name = $_POST['company_name'];
                     $ITS_validation = strtoupper($_POST['its_validation']);
                     $sourceValidation = strtoupper($_POST['SourceValidation']);
@@ -281,6 +283,8 @@
                                 $metadata->setAttribute("lkr", $sourceValidation);
                                 $metadata->setAttribute("lmc", $lmc);
                                 $metadata->setAttribute("client", $client);
+                                $metadata->setAttribute("ta", $ta);
+                                $metadata->setAttribute("tp", $tp);
                             }
 
                             // add converted data
@@ -482,6 +486,8 @@
                                 $metadata->setAttribute("lkr", $sourceValidation);
                                 $metadata->setAttribute("lmc", $lmc);
                                 $metadata->setAttribute("client", $client);
+                                $metadata->setAttribute("ta", $ta);
+                                $metadata->setAttribute("tp", $tp);
                             }
 
                             // add converted data

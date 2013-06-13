@@ -84,7 +84,7 @@ $("#datepicker1").datepicker();
 <tr>
 <td style="width: 202px;"><?php print  BASE_PMUI_PDEAD;?></td>
 <td style="width: 315px;">
-<div class="demo"><input name="deadline" id="datepicker1" type="text" value="<?php $today = date('d/m/Y');$tomorrow = strtotime('+10 day', strtotime($today)); if (BASE_DEF_VAL=='ON') print date('d/m/Y', $tomorrow);?>" /></div>
+<div class="demo"><input name="deadline" id="datepicker1" type="text" value="<?php $tomorrow = strtotime('+10 day'); if (BASE_DEF_VAL=='ON') print date('d/m/Y', $tomorrow);?>" /></div>
 </td>
 </tr>
 <tr>
@@ -106,6 +106,19 @@ $("#datepicker1").datepicker();
 <tr>
 <td style="width: 202px;"><?php print  BASE_PMUI_PMT;?></td>
 <td style="width: 315px;"><input name="MT" value="Yes" type="radio" checked />Yes <input name="MT" value="No" type="radio" />No</td>
+</tr>
+    <td style="width: 202px;">Use TA</td>
+    <td style="width: 202px;">
+        <input name="useTA" value="Yes" type="radio" checked />Yes
+        <input name="useTA" value="No" type="radio" />No
+    </td>
+</tr>
+<tr>
+    <td style="width: 202px;">Use TP</td>
+    <td style="width: 202px;">
+        <input name="useTP" value="Yes" type="radio" checked />Yes
+        <input name="useTP" value="No" type="radio" />No
+    </td>
 </tr>
 <tr>
 <td style="width: 202px;"><?php print  BASE_PMUI_PRT;?></td>
