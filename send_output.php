@@ -60,7 +60,7 @@ $data=$_REQUEST["data"];
 //$data=addslashes($_POST["data"]);
 //
 //echo "data after $data";
-////$data= sqlite_escape_string($data);
+//$data= urldecode($data);
 
 //print $data;
 echo sendOutput($id,$com,$data);

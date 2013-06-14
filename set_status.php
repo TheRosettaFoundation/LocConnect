@@ -1,7 +1,7 @@
 <?php
 header ("Content-Type:text/xml");
 /*------------------------------------------------------------------------*
- * © 2010 University of Limerick. All rights reserved. This material may  *
+ * ï¿½ 2010 University of Limerick. All rights reserved. This material may  *
  * not be reproduced, displayed, modified or distributed without the      *
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
@@ -30,9 +30,9 @@ function setJobStatus($id, $com, $msg)
   return $response;
 }
 
-$id=$_GET["id"];
-$com=$_GET["com"];
-$msg=$_GET["msg"];
+$id=$_REQUEST["id"];
+$com=$_REQUEST["com"];
+$msg=$_REQUEST["msg"];
 $msg=urldecode($msg);  
 
 //echo "id:".$id."<br/>";
