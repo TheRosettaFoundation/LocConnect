@@ -176,6 +176,13 @@ function sendResource($id, $type, $metdata, $desc, $content)
         $id=$result->fetchColumn();
     };
     $db=null;	
+
+    if ($xliffVersion == "2.0") {
+        $mda = $xliffNode->getAttribute('xmlns:mda');
+        if ($mda == '') {
+            $xliffNode->setAttribute('xmlns:mda', "urn:oasis:names:tc:xliff:metadata:2.0");
+        }
+    }
 		
     //upload resource
     $lmc="NO";
