@@ -6,7 +6,7 @@
  * express prior written permission of the copyright holder.              *
  *------------------------------------------------------------------------*/
 require_once('./conf.php');
- $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+ $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
  $res = $db->query('Select * from Project where  FinishDate is null Order by CreateDate Desc');
  $c=0;
  foreach($res as $row)

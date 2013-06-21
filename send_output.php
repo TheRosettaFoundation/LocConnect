@@ -28,15 +28,15 @@ function sendOutput($id, $com, $data)
 //  }
 
     //open the database
-    $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	
 	$res = $db->query('SELECT CurrentStep FROM Project where ID="'.$id.'"');
 	$data=(int) $res->fetchColumn();
 	$step=(string)$data;
 	
-	$count = $db->exec("Update Demo set Output='".$content."' where Job='".$id."' and Com='".strtoupper($com)."' and WOrder=".$step);
+	$ret = $db->query("Update Demo set Output='".$content."' where Job='".$id."' and Com='".strtoupper($com)."' and WOrder=".$step);
     // close the database connection
-	$count = $db->exec('Update Demo set OutputDate=datetime("now") where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
+	$db->exec('Update Demo set OutputDate=now() where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
     $db = NULL;
   }
   catch(PDOException $e)
@@ -44,7 +44,7 @@ function sendOutput($id, $com, $data)
     //print 'Exception : '.$e->getMessage();
 	$response="<error><msg>".$e->getMessage()."</msg></error>";
   }
-  if ($count>0) $response="<response><msg>Output Accepted</msg></response>"; 
+  if ($ret !== false) $response="<response><msg>Output Accepted</msg></response>"; 
   else  $response="<error><msg> Output was not updated. Ensure job id:".$id." is correct and component:".$com." has been assigned that job.</msg></error>";
   
    

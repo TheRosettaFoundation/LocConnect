@@ -12,14 +12,14 @@ function getJob($id, $com)
   try
   {
     //open the database
-    $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	
 	$res = $db->query('SELECT CurrentStep FROM Project where ID="'.$id.'"');
 	$data=(int) $res->fetchColumn();
 	$step=(string)$data;
 	
 	$result = $db->query('SELECT fileData FROM Demo where job="'.$id.'" and com="'.strtoupper($com).'" and WOrder='.$step);
-	$count = $db->exec('Update Demo set PickDate=datetime("now") where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
+	$count = $db->exec('Update Demo set PickDate=now() where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
 	$data= stripcslashes($result->fetchColumn());
 	$fileData="<content>".$data."</content>";
         

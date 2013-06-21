@@ -22,7 +22,7 @@ function genID()
 {
 	// this function generates an resource ID that is not found in the Resources Database
 	$newID=substr(md5(uniqid()), 0,10);
-	$db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	while (($newID==$id) || ($newID==""))
 	{		
 		$newID= substr(md5(uniqid()), 0,10);	 
@@ -43,7 +43,7 @@ function sendResource($nid, $type, $desc, $data, $metadata, $filename)
 	$id=$nid;
 	if ($id=="NOTSET") $id=genID(); // if Resource ID is not given, generate an ID for the resource;
 	
-    $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	
 	$result = $db->query('SELECT ResourceID FROM Resources where ResourceID="'.$id.'"'); 
 	// see whether a resource with the given ID already exists in the database

@@ -12,7 +12,7 @@ function getExtension($id)
   try
   {
      //open the database
-    $DBH = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $DBH = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	
     $getID = $DBH->prepare('SELECT filename FROM Project where ID=:idDB');
     $getID->bindParam(":idDB", $id);

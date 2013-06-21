@@ -8,7 +8,7 @@ require_once('./conf.php');
 			 $id=$_GET["id"];
 			 $method=$_GET["method"];
 			 $style=strtolower($_GET["style"]);
-             $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+             $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
              $res = $db->query('select * from Project where  ID="'.$id.'"');
 			 $c=0;
              foreach($res as $row)

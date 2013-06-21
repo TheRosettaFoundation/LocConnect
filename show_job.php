@@ -12,7 +12,7 @@ function showFileData($id, $com)
   try
   {
     //open the database
-    $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	$result = $db->query('SELECT fileData FROM Demo where job="'.$id.'" and com="'.strtoupper($com).'"');
 	$data= stripcslashes($result->fetchColumn());
 	$fileData="<content>".htmlspecialchars($data, ENT_QUOTES, "UTF-8")."</content>";
@@ -34,7 +34,7 @@ function showOutput($id, $com)
   try
   {
     //open the database
-    $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	$result = $db->query('SELECT Output FROM Demo where job="'.$id.'" and com="'.strtoupper($com).'"');
 	$data= stripslashes($result->fetchColumn());
 	$fileData="<content>".htmlspecialchars($data, ENT_QUOTES, "UTF-8")."</content>";

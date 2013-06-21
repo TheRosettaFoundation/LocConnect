@@ -39,7 +39,7 @@ require_once 'HTTP/Request2.php';
 	$project_ID="";
 	$id="";
 		
-	$db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	while (($project_ID==$id) || ($project_ID==""))
 	{		
 	$project_ID= substr(md5(uniqid()), 0,10);	 
@@ -50,12 +50,12 @@ require_once 'HTTP/Request2.php';
 
 		 
 	$statement="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','WFR','pending',1)";
-	$statement3="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName) VALUES ('".$project_ID."', '".$desc."',datetime('now'),100,1,'".$pname."')";
+	$statement3="INSERT INTO Project(ID, `Desc`, CreateDate, MaxSteps, CurrentStep, PName) VALUES ('".$project_ID."', '".$desc."',now(),100,1,'".$pname."')";
 	
 	$resp="<response><msg>".$project_ID."</msg></response>";
 	try
 	{
-		 $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+        $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 		 $count = $db->exec($statement);
 		 $count = $db->exec($statement3);
 		 $db= null;

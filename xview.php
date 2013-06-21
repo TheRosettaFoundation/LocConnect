@@ -100,7 +100,7 @@ $(".dblclick").editable("echo.php", {
             $com=$_GET["com"];
             $order=$_GET["order"];
             
-             $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+             $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
              $res = $db->query('select * from Project where  ID="'.$id.'"');
              $c=0;
              foreach($res as $row)
@@ -133,7 +133,7 @@ error_reporting(E_ALL);
 	//$com=$_GET["com"];
 	//$order=$_GET["order"];
 
-    $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	$q='SELECT Output FROM Demo where Job="'.$id.'" and Com="'.$com.'" and WOrder='.$order;
 
     $result = $db->query($q);

@@ -12,7 +12,7 @@ function getFilename($id, $com)
   try
   {
     //open the database
-    $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	
 	$res = $db->query('SELECT CurrentStep FROM Project where ID="'.$id.'"');
 	$data=(int) $res->fetchColumn();

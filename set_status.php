@@ -13,9 +13,9 @@ function setJobStatus($id, $com, $msg)
   try
   {
     //open the database
-    $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	$count = $db->exec('Update Demo set Status="'.strtolower($msg).'" where Job="'.$id.'" and Com="'.strtoupper($com).'"');
-	$count = $db->exec('Update Demo set UpdatedDate=datetime("now") where Job="'.$id.'" and Com="'.strtoupper($com).'"');
+	$count = $db->exec('Update Demo set UpdatedDate=now() where Job="'.$id.'" and Com="'.strtoupper($com).'"');
     // close the database connection
     $db = NULL;
   }
@@ -46,7 +46,7 @@ $st2="";
 if (strtolower($msg)=='complete') 
 {
 	
-	$db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 	$res = $db->query('SELECT CurrentStep FROM Project where ID="'.$id.'"');
 	$data=(int) $res->fetchColumn();
 	$step=(string)$data;
@@ -142,12 +142,12 @@ if (strtolower($msg)=='complete')
 			{
 			//$st2="<output>".$output_com_2."</output>";
 			$count = $db->exec('Update Project set Output="'.$output_com_2.'" where ID="'.$id.'"');
-			$count = $db->exec('Update Project set FinishDate=datetime("now") where ID="'.$id.'"');
+			$count = $db->exec('Update Project set FinishDate=now() where ID="'.$id.'"');
 			$count = $db->exec('Update Project set CurrentStep=0 where ID="'.$id.'"');
 			}
 			//set status to complete
 			$count = $db->exec('Update Demo set Status="complete" where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
-	$count = $db->exec('Update Demo set UpdatedDate=datetime("now") where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
+	$count = $db->exec('Update Demo set UpdatedDate=now() where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
 			$xliff=NULL;
 			$st2="<response><msg>Status Updated</msg></response>";
 		}
@@ -179,7 +179,7 @@ if (strtolower($msg)=='complete')
 			//set status to complete
 		    $count = $db->exec('Update Project set CurrentStep='.$nextStep.' where ID="'.$id.'"');
 			$count = $db->exec('Update Demo set Status="complete" where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
-	$count = $db->exec('Update Demo set UpdatedDate=datetime("now") where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
+	$count = $db->exec('Update Demo set UpdatedDate=now() where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
 	$st2="<response><msg>Status Updated</msg></response>";
 		  }
 		  else
@@ -201,12 +201,12 @@ if (strtolower($msg)=='complete')
 			//update project db
 		
 			$count = $db->exec('Update Project set Output="'.$output_com_2.'" where ID="'.$id.'"');
-			$count = $db->exec('Update Project set FinishDate=datetime("now") where ID="'.$id.'"');
+			$count = $db->exec('Update Project set FinishDate=now() where ID="'.$id.'"');
 			$count = $db->exec('Update Project set CurrentStep=0 where ID="'.$id.'"');
 			
 			//set status to complete
 			$count = $db->exec('Update Demo set Status="complete" where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
-	$count = $db->exec('Update Demo set UpdatedDate=datetime("now") where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
+	$count = $db->exec('Update Demo set UpdatedDate=now() where Job="'.$id.'" and Com="'.strtoupper($com).'" and WOrder='.$step);
 	$st2="<response><msg>Status Updated</msg></response>";
 		  } else
 		  {

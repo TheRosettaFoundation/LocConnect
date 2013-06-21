@@ -193,7 +193,7 @@
                         $project_ID = "";
                         $id = "";
 
-                        $db = new PDO('sqlite:' . BASE_DB_URL . 'locTemp.sqlite');
+                        $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
                         while (($project_ID == $id) || ($project_ID == "")) {
                             $project_ID = substr(md5(uniqid()), 0, 10);
                             $result = $db->query("SELECT Job FROM Demo where job='" . $project_ID . "'");
@@ -339,11 +339,11 @@
 //                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
 
 
-                            $statement5 = "INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('" . $project_ID . "', '" . $desc . "',datetime('now'),100,1,'" . $pname . "', '" . $filename . "')";
+                            $statement5 = "INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('" . $project_ID . "', '" . $desc . "',now(),100,1,'" . $pname . "', '" . $filename . "')";
                             ///echo $statement1."<br>"; 
 
                             try {
-                                $db = new PDO('sqlite:' . BASE_DB_URL . 'locTemp.sqlite');
+                                $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 //                 $count = $db->exec($statement1);
 //                 if($count==FALSE) die("<p>SQL query: <p>".$statement1."  ... failed");
 //		 $count = $db->exec($statement2);
@@ -410,7 +410,7 @@
                         $project_ID = "";
                         $id = "";
 
-                        $db = new PDO('sqlite:' . BASE_DB_URL . 'locTemp.sqlite');
+                        $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
                         while (($project_ID == $id) || ($project_ID == "")) {
                             $project_ID = substr(md5(uniqid()), 0, 10);
                             $result = $db->query("SELECT Job FROM Demo where job='" . $project_ID . "'");
@@ -541,10 +541,10 @@
 //		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
                             $statement3 = "INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('" . $project_ID . "', '" . trim($content) . "','WFR','pending',1)";
 //                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
-                            $statement5 = "INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('" . $project_ID . "', '" . $desc . "',datetime('now'),100,1,'" . $pname . "', '" . $filename . "')";
+                            $statement5 = "INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('" . $project_ID . "', '" . $desc . "',now(),100,1,'" . $pname . "', '" . $filename . "')";
                             //echo $statement3."<br>"; 
                             try {
-                                $db = new PDO('sqlite:' . BASE_DB_URL . 'locTemp.sqlite');
+                                $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 //                 $count = $db->exec($statement1);
 //                 if($count==FALSE) die("<p>SQL query: <p>".$statement1."  ... failed");
 //		 $count = $db->exec($statement2);

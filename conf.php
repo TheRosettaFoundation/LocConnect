@@ -7,6 +7,11 @@ date_default_timezone_set('Europe/Dublin');
 define('BASE_PATH',realpath('.')); 						
 define('BASE_URL', dirname($_SERVER["SCRIPT_NAME"]));	    //folder path where locConnect is installed
 //define('BASE_DB_URL', '../locConnect2.0/');	
+define('DB_DATABASE', 'LocConnectV0');
+define('DB_HOST', '127.0.0.1');
+define('DB_PORT', '3306');
+define('DB_USERNAME', 'root');
+define('DB_PASS', 'root');
 define('BASE_DB_URL', './');								// locConnect database location
 define('BASE_DEF_VAL', 'ON');
 define('BASE_VER', 'v2.8');									//locConnect version

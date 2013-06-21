@@ -39,7 +39,8 @@
 <td></td>
 <td>Project ID</td>
 <td>
-<select name="job"><?php $db = new PDO('sqlite:'.BASE_DB_URL.'locTemp.sqlite');
+<select name="job"><?php 
+    $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
 $res = $db->query('Select PName, ID from Project where FinishDate is null Order by CreateDate Desc');
 foreach($res as $row)
 {
