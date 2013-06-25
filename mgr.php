@@ -309,7 +309,7 @@ if(move_uploaded_file($tmpName,$upload_path . $filename)){
 		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
                  $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',2)";
                  
-		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',now(),100,1,'".$pname."', '".$filename."')";
+		 $statement5="INSERT INTO Project(ID, `Desc`, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',now(),100,1,'".$pname."', '".$filename."')";
 		//echo $statement."<br>"; 
 		 try
 		 {
@@ -504,7 +504,7 @@ if($content!=""){
 		 
 		 $statement1="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','EXT','pending',1)";
                  $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',2)";
-		 $statement5="INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',now(),100,1,'".$pname."', '".$filename."')";
+		 $statement5="INSERT INTO Project(ID, `Desc`, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('".$project_ID."', '".$desc."',now(),100,1,'".$pname."', '".$filename."')";
 		 //echo $statement3."<br>"; 
 		 try
 		 {

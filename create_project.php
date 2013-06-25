@@ -339,7 +339,7 @@
 //                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
 
 
-                            $statement5 = "INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('" . $project_ID . "', '" . $desc . "',now(),100,1,'" . $pname . "', '" . $filename . "')";
+                            $statement5 = "INSERT INTO Project(ID, `Desc`, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('" . $project_ID . "', '" . $desc . "',now(),100,1,'" . $pname . "', '" . $filename . "')";
                             ///echo $statement1."<br>"; 
 
                             try {
@@ -541,7 +541,7 @@
 //		 $statement2="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','LKR','pending',2)";
                             $statement3 = "INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('" . $project_ID . "', '" . trim($content) . "','WFR','pending',1)";
 //                 $statement4="INSERT INTO Demo(Job, FileData, Com, Status, WOrder) VALUES ('".$project_ID."', '".trim($content)."','MGR','pending',4)";
-                            $statement5 = "INSERT INTO Project(ID, Desc, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('" . $project_ID . "', '" . $desc . "',now(),100,1,'" . $pname . "', '" . $filename . "')";
+                            $statement5 = "INSERT INTO Project(ID, `Desc`, CreateDate, MaxSteps, CurrentStep, PName, filename) VALUES ('" . $project_ID . "', '" . $desc . "',now(),100,1,'" . $pname . "', '" . $filename . "')";
                             //echo $statement3."<br>"; 
                             try {
                                 $db = new PDO('mysql:host='.DB_HOST.';dbname='.DB_DATABASE.';port='.DB_PORT, DB_USERNAME, DB_PASS, array());
