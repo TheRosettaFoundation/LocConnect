@@ -28,9 +28,10 @@ class ParserTwoZero extends IParser
             print "<tr><td>File #".++$fileCount."</td></tr>";
             $childNode = $file->firstChild;
             while ($childNode != NULL) {
-                if ($childNode->nodeName == "group" ||
-                    $childNode->nodeName == "unit") {
-                    $this->parseGroupOrUnit($childNode, $translate);
+                if ($childNode->nodeName == "group") {
+                    $this->parseGroup($childNode, $translate);
+                } elseif ($childNode->nodeName == "unit") {
+                    $this->parseUnit($childNode, $translate);
                 }
                 $childNode = $childNode->nextSibling;
             }
@@ -39,29 +40,39 @@ class ParserTwoZero extends IParser
         print '<center><p class="txt"><a id="closet" href="#"> <em> '.BASE_XLFV_HIDET.' </em> </a></p></center></div>' ;
     }
 
-    private function parseGroupOrUnit($group, $translate)
+    private function parseGroup($group, $translate)
     {
         if ($group->hasChildNodes()) {
             $this->parseAttributes($group, $translate);
-            if ($group->nodeName == "group") {
-                print "<tr><td>Group</td></tr>";
-            } elseif ($group->nodeName == "unit") {
-                print "<tr><td>Unit {$group->getAttribute('id')}</td></tr>";
-            }
+            print "<tr><td>Group</td></tr>";
             $child = $group->firstChild;
             while ($child != NULL) {
-                if ($child->nodeName == "group" ||
-                        $child->nodeName == "unit") {
-                    $this->parseGroupOrUnit($child, $translate);
-                } elseif ($child->nodeName == "segment") {
-                    $this->parseSegment($child, $translate);
+                if ($child->nodeName == "group") {
+                    $this->parseGroup($child, $translate);
+                } elseif ($child->nodeName == "unit") {
+                    $this->parseUnit($child, $translate);
                 }
                 $child = $child->nextSibling;
             }
         }
     }
 
-    private function parseSegment($segment, $translate)
+    private function parseUnit($unit, $translate)
+    {
+        if ($unit->hasChildNodes()) {
+            $this->parseAttributes($unit, $translate);
+            print "<tr><td>Unit {$unit->getAttribute('id')}</td></tr>";
+            $child = $unit->firstChild;
+            while ($child != NULL) {
+                if ($child->nodeName == "segment") {
+                    $this->parseSegment($child, $unit, $translate);
+                }
+                $child = $child->nextSibling;
+            }
+        }
+    }
+
+    private function parseSegment($segment, $unit, $translate)
     {
         if ($segment->hasChildNodes()) {
             $this->parseAttributes($segment, $translate);
@@ -87,8 +98,7 @@ class ParserTwoZero extends IParser
             print '</tr>';
 
             $target = $segment->getElementsByTagName("target");
-            if ($target->item(0) && $target->item(0)->parentNode &&
-                    $target->item(0)->parentNode->nodeName == "segment") {
+            if ($target->item(0)) {
                 $target = $this->parseElement($target->item(0));
             } else {
                 $target = BASE_XLFV_SRCERR;
@@ -102,10 +112,21 @@ class ParserTwoZero extends IParser
             print 'class="dblclick">'.$target.'</td>';
             print '</tr>';
 
-            $matches = $segment->getElementsByTagName("match");
-            if ($matches->length > 0) {
+            $query = "//unit[@id='{$unit->getAttribute('id')}']//segment[@id='{$segment->getAttribute('id')}']/source//mrk[@type='match']";
+            $mrks = $this->xpath->query($query);
+            $matches = array();
+            if ($mrks->length > 0) {
+                foreach ($mrks as $mrk) {
+                    $refId = $mrk->getAttribute('ref');
+                    $refId = substr($refId, 1);
+                    $query = "//unit[@id='{$unit->getAttribute('id')}']//mtc:matches";
+                    $query .= "/mtc:match[@id='$refId']";
+                    $matches[] = $this->xpath->query($query)->item(0);
+                }
+            }
+            if (count($matches) > 0) {
                 $first = true;
-                print '<tr class="row-no-click"><td rowspan="'.(string)($matches->length * 3).
+                print '<tr class="row-no-click"><td rowspan="'.(string)(count($matches) * 3).
                         '">'.BASE_XLFV_ALT.'</td>';
                 foreach ($matches as $match) {
                     if ($first) {
@@ -145,7 +166,7 @@ class ParserTwoZero extends IParser
                     $length = $target->attributes->length;
                     for ($i = 0; $i < $length; $i++) {
                         $att = $target->attributes->item($i)->name;
-                        $val= $target->attributes->item($i)->value;
+                        $val = $target->attributes->item($i)->value;
                         $metaData .= "target-$att : $val<br/>";
                     }
 

@@ -6,10 +6,12 @@ require_once 'ParserTwoZero.class.php';
 abstract class IParser
 {
     protected $domDoc;
+    protected $xpath;
 
     protected function __construct($dom)
     {
         $this->domDoc = $dom;
+        $this->xpath = new DOMXPath($dom);
     }
 
     public static function getParser($xliffSource)
