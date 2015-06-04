@@ -1,6 +1,8 @@
 # LocConnect
 LocConnect is a SOA based research platform interconnects various localisation components by providing access to a XLIFF-based data layer through an Application Programming Interface (API). By using this common data layer, LocConnect allow for the traversal of XLIFF-based data between different distributed localisation components.
 
+Researcher: Dr. Asanka Wasala
+
 **Coded by:**
 * [Asanka Wasala](https://github.com/Wasala)
 * [David O'Carroll](https://github.com/spaceindaver)
