@@ -4,7 +4,8 @@ LocConnect is a SOA based research platform interconnects various localisation c
 **Coded by:**
 * [Asanka Wasala](https://github.com/Wasala)
 * [David O'Carroll](https://github.com/spaceindaver)
-
+* [Sean Mooney](https://github.com/SeanMooney) 
+* 
 ## License notice
 This software is licensed under the terms of the GNU LESSER GENERAL PUBLIC LICENSE Version 3, 29 June 2007 For full terms see License.txt or http://www.gnu.org/licenses/lgpl-3.0.txt
 
